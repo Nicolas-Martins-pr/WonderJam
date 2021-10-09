@@ -109,10 +109,9 @@ public class Tile : MonoBehaviour
         this.m_trap = !this.m_trap;
     }
 
-    public void setActive()
+    public void setActive(bool value)
     {
-        this.m_active = !this.m_active;
-        Debug.Log("active");
+        this.m_active = value;
     }
     #endregion
 
@@ -138,7 +137,7 @@ public class Tile : MonoBehaviour
             {
                 walkableTiles.Add(tile);
                 tile.ActivateSelectorIndicator();
-                tile.setActive();
+                tile.setActive(true);
             }
             
         }
@@ -155,6 +154,11 @@ public class Tile : MonoBehaviour
             this.m_selectorIndicator.SetActive(true);
     }
 
+    public void DesactivateSelectorIndicator()
+    {
+        this.m_selectorIndicator.SetActive(false);
+        this.setActive(false);
+    }
     
  
     #endregion
@@ -166,8 +170,7 @@ public class Tile : MonoBehaviour
           
         if(isActive())
         {
-            this.setPlayer(true);
-            Debug.Log("PlayerTrue");  
+            this.setPlayer(true); 
         } 
     }
 

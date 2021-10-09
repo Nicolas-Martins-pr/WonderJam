@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Controller : MonoBehaviour {
 
-    public int side = 7; // must be odd
+    public int m_side = 7; // must be odd
 
     public GameObject m_board;
     
@@ -28,7 +28,7 @@ public class Controller : MonoBehaviour {
         if(this.GetPlayer().getPlayerClicked())
         {
             if (!displayCalledOnce)
-            this.GetPlayer().GetTile().getMovements();
+            this.GetPlayer().getTile().getMovements();
             this.displayCalledOnce = true;
         }
 
@@ -51,10 +51,10 @@ public class Controller : MonoBehaviour {
     {
         Vector3 position = new Vector3(0,0,0);
         GameObject newTile;
-        int half = (this.side - 1)/2; 
-        for (int i = 0; i < this.side; i++)
+        int half = (this.m_side - 1)/2; 
+        for (int i = 0; i < this.m_side; i++)
         {
-            for (int j = 0; j < side; j++)
+            for (int j = 0; j < m_side; j++)
             {
                 position = new Vector3(j-half,0,i);
                 newTile = Instantiate(prefabTileG,position,Quaternion.identity,this.m_board.transform);
@@ -71,12 +71,12 @@ public class Controller : MonoBehaviour {
 
                     
                 }
-                if(j== 0 && i ==this.side - 1)
+                if(j== 0 && i ==this.m_side - 1)
                 {
                     newTile.name = "TileG_EndPlayer1 " + i + j;
                     newTileVar.m_endPlayer1 = true;
                 }
-                if (j== side-1 && i == side -1)
+                if (j== m_side-1 && i == m_side -1)
                 {
                     newTile.name = "TileG_EndPlayer2 " + i + j;
                     newTileVar.m_endPlayer2 = true;
@@ -94,19 +94,33 @@ public class Controller : MonoBehaviour {
         }
     }
 
+    void DesactiveAllTileSelectorIndicator()
+    {
+        foreach (Tile tile in m_gameBoardI)
+        {
+            tile.DesactivateSelectorIndicator();
+        }
+    }
+
     void MovePlayer()
     {
         foreach (Tile tile in this.m_gameBoardI)
         {
-            if (tile.hasPlayer() && (GetPlayer().GetTile().getPositionH() != tile.getPositionH() || GetPlayer().GetTile().getPositionV() != tile.getPositionV()))
+            if (tile.hasPlayer() && (GetPlayer().getTile().getPositionH() != tile.getPositionH() || GetPlayer().getTile().getPositionV() != tile.getPositionV()))
             {
                 Debug.Log("tiles" + tile.getPositionH() + tile.getPositionV());
-                int child =((int) tile.getPosition().GetValue(0)) + ((int) tile.getPosition().GetValue(1)) ;
-                GetPlayer().GetTile().setPlayer(false);
-                GetPlayer().transform.position = new Vector3(0,0,2);
-                // GetPlayer().MoveAtPointerSelection(this.transform.GetChild(child));
+                int child =(((int) tile.getPosition().GetValue(0)) -1)  * this.m_side + ((int) tile.getPosition().GetValue(1)) -1  ;
+                GetPlayer().getTile().setPlayer(false);
+                GetPlayer().MoveAtPointerSelection(this.transform.GetChild(child).gameObject);
+                ResetBeforeAction();
             }
         }
+    }
+    void ResetBeforeAction()
+    {
+        DesactiveAllTileSelectorIndicator();
+        displayCalledOnce = false;
+        GetPlayer().setClicked(false);
     }
     
     

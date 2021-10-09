@@ -33,7 +33,7 @@ public class CharacterControl : MonoBehaviour
         return this.m_clicked;
     }
          
-    public Tile GetTile()
+    public Tile getTile()
     {
         return this.m_tile;
     }
@@ -44,17 +44,23 @@ public class CharacterControl : MonoBehaviour
     {
         this.m_tile = tile;
     }
+
+    public void setClicked(bool value)
+    {
+        this.m_clicked = value;
+    }
     #endregion
 
     void OnMouseUp() 
     {
         Debug.Log("click");  
-        this.m_clicked = true;  
+        this.setClicked(true);  
     }
 
-    public void MoveAtPointerSelection(Transform tile)
+    public void MoveAtPointerSelection(GameObject tile)
     {
-        m_player.transform.position = tile.position;
+        m_player.transform.position = tile.transform.position;
+        setTile(tile.GetComponent<Tile>());
     }
 
 
