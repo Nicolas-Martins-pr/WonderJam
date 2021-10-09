@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Deck : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public enum cards{Cell, Trap, Rock, Portal, Jump, Joker}
+
     void Start()
     {
         
