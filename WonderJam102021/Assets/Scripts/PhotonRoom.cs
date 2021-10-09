@@ -19,8 +19,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     public int playersInRoom;
     public int playerId;
 
-    public bool readyToCount = false;
-    public float maxPlayer = 2;
+    public float maxPlayer;
 
     //Player info
     Player[] photonPlayers;
