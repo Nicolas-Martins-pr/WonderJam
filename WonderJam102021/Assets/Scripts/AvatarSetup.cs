@@ -6,7 +6,7 @@ using UnityEngine;
 public class AvatarSetup : MonoBehaviour
 {
     private PhotonView PV;
-    public Camera myCamera;
+    public GameObject myCamera;
     public AudioListener myAL;
 
     // Start is called before the first frame update
@@ -15,7 +15,7 @@ public class AvatarSetup : MonoBehaviour
         PV = GetComponent<PhotonView>();
         if (!PV.IsMine)
         {
-            Destroy(myCamera);
+            myCamera.SetActive(false);
             Destroy(myAL);
         }
     }
