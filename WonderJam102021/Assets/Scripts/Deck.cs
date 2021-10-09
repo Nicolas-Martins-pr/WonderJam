@@ -1,30 +1,32 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
-using UnityEditorInternal;
 using UnityEngine;
 
 public class Deck : MonoBehaviour
 {
-    public List<GameObject> myGameObjects = new List<GameObject>();
-    public Canvas can;
+    public enum cardName {Cell, Jump, Portal,Trap, Joker}
+    public List<GameObject> myGameObjects;
+    private int i = 0;
     void Start()
     {
-        
-        myGameObjects=Resources.LoadAll<GameObject>("Card").ToList();
-        foreach (var pref in myGameObjects)
+        foreach (var name in Enum.GetNames(typeof(cardName)))
         {
-            print(pref);
+            GameObject localGO =Resources.Load<GameObject>("Card"+name);
+            myGameObjects.Add(localGO);
+            print(myGameObjects[i]);
+            i++;
         }
-        for (int i = 0; i < myGameObjects.Count; i++)
+        myGameObjects.RemoveAt(0);
+        
+        foreach (var obj in myGameObjects)
         {
-            print("oui");
-            GameObject card = Instantiate(myGameObjects[i], new Vector3(0,0,0), quaternion.identity);
+            Debug.Log("test");
+            GameObject card = Instantiate(obj, new Vector3(0,0,0), quaternion.identity);
             card.transform.SetParent(this.transform,false);
         }
-        
-
     }
 
     // Update is called once per frame
