@@ -78,27 +78,25 @@ public class CharacterControl : MonoBehaviourPunCallbacks
         GameSetup.GS.playerUI.transform.GetChild(0).gameObject.SetActive(false);
         GameSetup.GS.playerUI.transform.GetChild(1).gameObject.SetActive(true);
         Text title = GameSetup.GS.playerUI.transform.GetChild(1).GetChild(0).gameObject.GetComponent<Text>();
-            Text Explenation = GameSetup.GS.playerUI.transform.GetChild(1).GetChild(1).gameObject.GetComponent<Text>();
-            if (haswin != null)
+        Text Explenation = GameSetup.GS.playerUI.transform.GetChild(1).GetChild(1).gameObject.GetComponent<Text>();
+        Debug.Log(PhotonRoom.room.playersInRoom);
+        if (haswin || PhotonRoom.room.playersInRoom < 2)
+        {
+            title.text = "VICTORY !!!";
+            if (PhotonRoom.room.playersInRoom <2)
             {
-                if (haswin)
-                {
-                    title.text = "VICTORY !!!";
-                    if (PhotonRoom.room.playersInRoom == 1)
-                    {
-                        Explenation.text = "You oponnent has disconnected";
-                    }
-                    else
-                    {
-                        Explenation.text = "You reached your objective or the oponnent forfeited";
-                    }
-                }
-                else
-                {
-                    title.text = "DEFEAT ...";
-                    Explenation.text = "Your oponnent reached his objective or you forfeited";
-                }
+                Explenation.text = "You oponnent has disconnected";
             }
+            else
+            {
+                Explenation.text = "You reached your objective or the oponnent forfeited";
+            }
+        }
+        else
+        {
+            title.text = "DEFEAT ...";
+            Explenation.text = "Your oponnent reached his objective or you forfeited";
+        }
     }
 
     public void Forfeit()

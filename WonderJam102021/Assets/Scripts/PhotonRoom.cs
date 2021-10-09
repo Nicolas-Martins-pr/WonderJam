@@ -114,6 +114,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     {
         base.OnPlayerLeftRoom(otherPlayer);
         Debug.Log(otherPlayer.NickName + " has left the game");
+        PlayerCountUpdate();
         try
         {
             GameObject.Find("character").gameObject.GetComponent<CharacterControl>().EndGame();
