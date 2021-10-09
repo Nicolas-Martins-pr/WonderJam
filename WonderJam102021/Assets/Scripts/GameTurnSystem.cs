@@ -37,8 +37,8 @@ public class GameTurnSystem : MonoBehaviour
     {
         state = TurnState.Start;
         phase.text = "Phase: " + state;
-        Timer(5);
-        PlayindCard();
+        coInst=StartCoroutine(Timer(5));
+        
         
     }
 
@@ -58,6 +58,8 @@ public class GameTurnSystem : MonoBehaviour
 
     public void PlayerPlay()
     {
+        state = TurnState.PlayerTurn;
+        phase.text = "Phase: "+state;
         coInst = StartCoroutine(Timer(30));
     }
     public void OnEndTurn()
@@ -67,6 +69,7 @@ public class GameTurnSystem : MonoBehaviour
             phase.text = "Not your turn";
             return;
         }
+        StopCoroutine(coInst);
         state = TurnState.Start;
         SetupTurn();
     }
@@ -87,6 +90,10 @@ public class GameTurnSystem : MonoBehaviour
         }else if(state==TurnState.Card)
         {
             PlayerPlay();
+        }
+        else if (state==TurnState.Start)
+        {
+            PlayindCard();
         }
 
     }
