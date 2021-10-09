@@ -57,7 +57,9 @@ public class Controller : MonoBehaviour {
             for (int j = 0; j < m_side; j++)
             {
                 position = new Vector3(j-half,0,i);
-                newTile = Instantiate(prefabTileG,position,Quaternion.identity,this.m_board.transform);
+                newTile = Instantiate(prefabTileG,Vector3.zero, Quaternion.identity,this.m_board.transform);
+                newTile.transform.SetParent(m_board.transform);
+                newTile.transform.localPosition = position;
                 newTile.name = "TileG " + i + j;
                 Tile newTileVar = newTile.GetComponent<Tile>();
                 newTileVar.m_positionH = i+1;

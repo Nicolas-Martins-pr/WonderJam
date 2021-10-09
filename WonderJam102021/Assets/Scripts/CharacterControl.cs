@@ -8,7 +8,6 @@ public class CharacterControl : MonoBehaviour
     //Todo list : création de map avec rotation aléatoire des objects qui compose le terrain
     public Tile m_tile; 
     public GameObject m_player;
-    public GameObject m_tile; 
     public GameObject m_character;
     public GameObject m_animator;
     public Animator animState;
@@ -25,7 +24,6 @@ public class CharacterControl : MonoBehaviour
     {
         animState = m_animator.GetComponent<Animator>();
         animMovement = GetComponent<Animator>(); ;
-        StartMove("north");
 }
 
     // Update is called once per frame
