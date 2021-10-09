@@ -393,7 +393,7 @@ MonoBehaviour:
   currentScene: 0
   playersInRoom: 0
   playerId: 0
-  maxPlayer: 1
+  maxPlayer: 2
 --- !u!4 &799824475
 Transform:
   m_ObjectHideFlags: 0

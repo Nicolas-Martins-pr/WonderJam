@@ -124,6 +124,4 @@ public class Controller : MonoBehaviour {
         displayCalledOnce = false;
         GetPlayer().setClicked(false);
     }
-    
-    
 }

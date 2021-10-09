@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.SceneManagement;
+using System;
 
 public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
@@ -113,6 +114,14 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     {
         base.OnPlayerLeftRoom(otherPlayer);
         Debug.Log(otherPlayer.NickName + " has left the game");
-        playersInRoom--;
+        PlayerCountUpdate();
+        try
+        {
+            GameObject.Find("character").gameObject.GetComponent<CharacterControl>().EndGame();
+        }
+        catch(Exception e)
+        {
+            Debug.Log("Tried to end game but not in game");
+        }
     }
 }

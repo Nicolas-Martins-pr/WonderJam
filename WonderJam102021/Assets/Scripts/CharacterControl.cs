@@ -1,9 +1,10 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterControl : MonoBehaviour
+public class CharacterControl : MonoBehaviourPunCallbacks
 {
     //Todo list : création de map avec rotation aléatoire des objects qui compose le terrain
     public Tile m_tile; 
@@ -13,6 +14,8 @@ public class CharacterControl : MonoBehaviour
     public Animator animState;
     public Animator animMovement;
     public GameObject playerpos;
+    public bool haswin;
+    private PhotonView PV;
 
     // public GameObject m_gameBoard;
 
@@ -22,6 +25,7 @@ public class CharacterControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        PV = GetComponent<PhotonView>();
         animState = m_animator.GetComponent<Animator>();
         animMovement = GetComponent<Animator>(); ;
 }
@@ -50,18 +54,58 @@ public class CharacterControl : MonoBehaviour
     {
         this.m_tile = tile;
     }
-
+    [PunRPC]
+    public void SetHasWin(bool value)
+    {
+        this.haswin = value;
+    }
+    #endregion
+    
     public void setClicked(bool value)
     {
         this.m_clicked = value;
     }
-    #endregion
 
     void OnMouseUp() 
     {
         Debug.Log("click");  
         this.setClicked(true);  
     }
+
+    [PunRPC]
+    public void EndGame()
+    {
+        GameSetup.GS.playerUI.transform.GetChild(0).gameObject.SetActive(false);
+        GameSetup.GS.playerUI.transform.GetChild(1).gameObject.SetActive(true);
+        Text title = GameSetup.GS.playerUI.transform.GetChild(1).GetChild(0).gameObject.GetComponent<Text>();
+        Text Explenation = GameSetup.GS.playerUI.transform.GetChild(1).GetChild(1).gameObject.GetComponent<Text>();
+        Debug.Log(PhotonRoom.room.playersInRoom);
+        if (haswin || PhotonRoom.room.playersInRoom < 2)
+        {
+            title.text = "VICTORY !!!";
+            if (PhotonRoom.room.playersInRoom <2)
+            {
+                Explenation.text = "You oponnent has disconnected";
+            }
+            else
+            {
+                Explenation.text = "You reached your objective or the oponnent forfeited";
+            }
+        }
+        else
+        {
+            title.text = "DEFEAT ...";
+            Explenation.text = "Your oponnent reached his objective or you forfeited";
+        }
+    }
+
+    public void Forfeit()
+    {
+        haswin = false;
+        PV.RPC("SetHasWin", RpcTarget.OthersBuffered, true);
+        PV.RPC("EndGame", RpcTarget.AllBuffered);
+    }
+
 
     public void MoveAtPointerSelection(GameObject tile)
     {
@@ -98,4 +142,5 @@ public class CharacterControl : MonoBehaviour
         playerpos.transform.position = newpost ;
         //StartMove("north");
     }
+
 }
