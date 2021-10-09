@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class CharacterControl : MonoBehaviour
 {
-    public GameObject m_platform; 
+    public GameObject m_tile; 
     public GameObject m_character;
 
 
@@ -29,13 +29,14 @@ public class CharacterControl : MonoBehaviour
          
     #endregion
 
-    private void OnMouseUp() {
+    void OnMouseUp() 
+    {
         Debug.Log("click");    
     }
 
-    void MoveAtPointerSelection()
+    void MoveAtPointerSelection(GameObject tile)
     {
-        // m_character.transform.position On click
+        m_character.transform.position = tile.transform.position;
     }
 
 
