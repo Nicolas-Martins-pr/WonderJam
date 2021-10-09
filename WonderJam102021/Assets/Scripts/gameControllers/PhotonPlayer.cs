@@ -17,11 +17,12 @@ public class PhotonPlayer : MonoBehaviour
         PV = GetComponent<PhotonView>();
         if (PV.IsMine)
         {
-            Debug.Log(PhotonRoom.room.playerId);
+            int id = PhotonRoom.room.playerId-1;
+            Debug.Log(id);
             myAvatar = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerAvatar"),
-                GameSetup.GS.spawnPoints[PhotonRoom.room.playerId-1].position,
-                GameSetup.GS.spawnPoints[PhotonRoom.room.playerId-1].rotation, 0);
-            myAvatar.transform.parent = GameSetup.GS.spawnPoints[PhotonRoom.room.playerId-1].transform.parent;
+                GameSetup.GS.spawnPoints[id].position,
+                GameSetup.GS.spawnPoints[id].rotation, 0);
+            myAvatar.transform.parent = GameSetup.GS.spawnPoints[id].transform.parent;
         }
     }
 

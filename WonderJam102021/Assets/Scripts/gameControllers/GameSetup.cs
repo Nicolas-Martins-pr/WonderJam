@@ -21,7 +21,8 @@ public class GameSetup : MonoBehaviour
         }
     }
 
-    public void DisconnectPlayer()
+
+public void DisconnectPlayer()
     {
         StartCoroutine(DisconnectAndLoad());
     }
@@ -34,5 +35,21 @@ public class GameSetup : MonoBehaviour
             yield return null;
         }
         SceneManager.LoadScene(0);
+    }
+
+    public void ReconnectPlayer()
+    {
+        StartCoroutine(ReconnectAndLoad());
+    }
+
+    IEnumerator ReconnectAndLoad()
+    {
+        PhotonNetwork.Disconnect();
+        while (PhotonNetwork.IsConnected)
+        {
+            yield return null;
+        }
+        SceneManager.LoadScene(0);
+
     }
 }
