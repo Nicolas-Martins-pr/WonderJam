@@ -13,10 +13,13 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     private PhotonView PV;
     public int multiplayerScene;
 
-    public bool isGameLoaded;
+
+    public bool isGameLoaded = false;
     public int currentScene;
     public int playersInRoom;
     public int playerId;
+
+    public float maxPlayer;
 
     //Player info
     Player[] photonPlayers;
@@ -62,7 +65,12 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     // Update is called once per frame
     void Update()
     {
-        
+        PlayerCountUpdate();
+        if (!isGameLoaded && playersInRoom == maxPlayer)
+        {
+            StartGame();
+            isGameLoaded = true;
+        }
     }
     public override void OnJoinedRoom()
     {
@@ -73,7 +81,6 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
         playerId = playersInRoom;
         PhotonNetwork.NickName = playerId.ToString();
 
-        StartGame();
     }
 
     void StartGame()
@@ -95,5 +102,17 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     void CreatePlayer()
     {
         PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PhotonNetworkPlayer"), transform.position, Quaternion.identity,0);
+    }
+
+    void PlayerCountUpdate()
+    {
+        playersInRoom = PhotonNetwork.PlayerList.Length;
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        base.OnPlayerLeftRoom(otherPlayer);
+        Debug.Log(otherPlayer.NickName + " has left the game");
+        playersInRoom--;
     }
 }

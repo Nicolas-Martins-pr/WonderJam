@@ -9,6 +9,8 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public static NetworkController lobby;
 
     public GameObject battlebutton;
+    public GameObject waitinginfo;
+    public GameObject cancelbutton;
 
     private void Awake()
     {
@@ -35,6 +37,12 @@ public class NetworkController : MonoBehaviourPunCallbacks
         battlebutton.SetActive(false);
     }
 
+    public override void OnJoinedRoom()
+    {
+        base.OnJoinedRoom();
+        waitinginfo.SetActive(true);
+        cancelbutton.SetActive(true);
+    }
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         base.OnJoinRandomFailed(returnCode, message);
@@ -65,5 +73,13 @@ public class NetworkController : MonoBehaviourPunCallbacks
     void Update()
     {
         
+    }
+
+    public void onCancelButtonClicked()
+    {
+        PhotonNetwork.LeaveRoom();
+        battlebutton.SetActive(true);
+        waitinginfo.SetActive(false);
+        cancelbutton.SetActive(false);
     }
 }
