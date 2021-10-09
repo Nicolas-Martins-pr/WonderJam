@@ -10,8 +10,12 @@ public class Tile : MonoBehaviour
     public bool m_mountain;
     public bool m_water;
     public bool m_trap;
-    public bool m_player;
-    public Tile[] m_nextTiles;  //Group of different Tile free to move 
+    public bool m_player =false;
+    public bool m_endPlayer1;
+    public bool m_endPlayer2;
+
+    public bool m_active = false;
+    public List<Tile> m_nextTiles = new List<Tile>();  //Group of different Tile free to move 
 
     public GameObject m_selectorIndicator;
     // Start is called before the first frame update
@@ -28,88 +32,114 @@ public class Tile : MonoBehaviour
 
     #region Accessors
 
-    int getPositionH() 
+    public int getPositionH() 
     {
         return this.m_positionH;
     }
 
-    int getPositionV() 
+    public int getPositionV() 
     {
         return m_positionV;
     }
 
-    bool hasMountain() 
+    public int[] getPosition()
+    {
+        int[] position = new int[2] {this.getPositionH(),this.getPositionV()};
+        return position;
+    }
+    public bool hasMountain() 
     {
         return this.m_mountain;
     }
 
-    bool hasWater() 
+    public bool hasWater() 
     {
         return this.m_water;
     }
 
-    bool hasTrap() 
+    public bool hasTrap() 
     {
         return this.m_trap;
     }
 
-    bool hasPlayer() 
+    public bool hasPlayer() 
     {
         return this.m_player;
     }
 
-    bool isWalkable()
+    public bool isWalkable()
     {
         return !this.hasMountain() && !this.hasWater();
     }
-    Tile[] getNextTiles()
+    public List<Tile> getNextTiles()
     {
         return this.m_nextTiles;
     }
 
+    public bool isActive()
+    {
+        return this.m_active;
+    }
     #endregion
 
     #region Mutators
 
-    void setPositionH(int value)
+    public void setPositionH(int value)
     {
         this.m_positionH = value;
     }
-    void setPositionV(int value)
+    public void setPositionV(int value)
     {
         this.m_positionV = value;
     }
-    void setMountain()
+    public void setMountain()
     {
         this.m_mountain = !this.m_mountain;
     }
-    void setPlayer()
+    public void setPlayer(bool value)
     {
-        this.m_player = !this.m_player;
+        this.m_player = value;
     }
-    void setWater()
+    public void setWater()
     {
         this.m_water = !this.m_water;
     }
-    void setTrap()
+    public void setTrap()
     {
         this.m_trap = !this.m_trap;
+    }
+
+    public void setActive(bool value)
+    {
+        this.m_active = value;
     }
     #endregion
 
     #region Utils
-    List<Tile> getMovements()
+
+    public void SetAdjacentTiles(List<Tile> boardtiles) // optimisable
+    {
+        foreach (Tile tile in boardtiles)
+        {
+            if (tile.getPositionH() == this.getPositionH() -1 && tile.getPositionV() == this.getPositionV() || tile.getPositionH() == this.getPositionH() +1 && tile.getPositionV() == this.getPositionV() || tile.getPositionV() == this.getPositionV() -1 && tile.getPositionH() == this.getPositionH()||tile.getPositionV() == this.getPositionV() +1 && tile.getPositionH() == this.getPositionH())
+            {
+                this.m_nextTiles.Add(tile);
+            }
+        }
+    }
+    public List<Tile> getMovements()
     {
         List<Tile> walkableTiles = new List<Tile>();
-        Tile[] tiles = this.getNextTiles();
-        for (int i = 0; i <  this.getNextTiles().Length; i++)
+        List<Tile> tiles = this.getNextTiles();
+        foreach (Tile tile in tiles)
         {
-            if (tiles[i].isWalkable())
+            if (tile.isWalkable())
             {
-                walkableTiles.Add(tiles[i]);
-                tiles[i].ActivateSelectorIndicator();
+                walkableTiles.Add(tile);
+                tile.ActivateSelectorIndicator();
+                tile.setActive(true);
             }
-
+            
         }
         return walkableTiles;
     }
@@ -123,6 +153,13 @@ public class Tile : MonoBehaviour
         else
             this.m_selectorIndicator.SetActive(true);
     }
+
+    public void DesactivateSelectorIndicator()
+    {
+        this.m_selectorIndicator.SetActive(false);
+        this.setActive(false);
+    }
+    
  
     #endregion
     
@@ -130,8 +167,11 @@ public class Tile : MonoBehaviour
          
     void OnMouseUp() 
     {
-        Debug.Log("click");    
-        this.getMovements();
+          
+        if(isActive())
+        {
+            this.setPlayer(true); 
+        } 
     }
 
 
