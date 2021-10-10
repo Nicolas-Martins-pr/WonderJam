@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using ExitGames.Client.Photon;
+using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ public class NetworkController : MonoBehaviourPunCallbacks
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();// Connect to master server
+        PhotonPeer.RegisterType(typeof(Tile), 1, Tile.Serialize, Tile.Deserialize);
     }
 
     public override void OnConnectedToMaster()

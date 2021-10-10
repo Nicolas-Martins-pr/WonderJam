@@ -8,7 +8,6 @@ public class CharacterControl : MonoBehaviourPunCallbacks
 {
     //Todo list : création de map avec rotation aléatoire des objects qui compose le terrain
     public Tile m_tile; 
-    public GameObject m_player;
     public GameObject m_character;
     public GameObject m_animator;
     public Animator animState;
@@ -68,8 +67,16 @@ public class CharacterControl : MonoBehaviourPunCallbacks
 
     void OnMouseUp() 
     {
-        Debug.Log("click");  
-        this.setClicked(true);  
+        if (!this.getPlayerClicked())
+        {
+            this.getTile().getMovements();
+            this.setClicked(true);
+        }
+        else
+        {
+            Controller.ctrl.DesactiveAllTileSelectorIndicator();
+            this.setClicked(false);
+        }
     }
 
     [PunRPC]
@@ -107,19 +114,15 @@ public class CharacterControl : MonoBehaviourPunCallbacks
     }
 
 
-    public void MoveAtPointerSelection(GameObject tile)
-    {
-        m_player.transform.position = tile.transform.position;
-        setTile(tile.GetComponent<Tile>());
-    }
+
     // ["south","east","north","ouest"]
-    void StartMove(string direction)
+    public void StartMove(string direction)
     {
         animMovement.SetTrigger(direction);
         animState.SetBool("isWalking", true);
     }
 
-    void FinishMove(string direction)
+    public void FinishMove(string direction)
     {
         animState.SetBool("isWalking", false);
         Vector3 newpost = new Vector3(playerpos.transform.position.x, playerpos.transform.position.y, playerpos.transform.position.z);

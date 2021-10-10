@@ -1,8 +1,11 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class Controller : MonoBehaviour {
+
+    public static Controller ctrl;
 
     public int m_side = 7; // must be odd
 
@@ -11,39 +14,44 @@ public class Controller : MonoBehaviour {
     public Tile[] gameBoard;
 
     public List<Tile> m_gameBoardI;
-    public CharacterControl m_player;
+    public CharacterControl m_character;
     public GameObject prefabTileG;
     public GameObject prefabTileW;
 
+    private PhotonView PV;
+
     private bool displayCalledOnce = false;
+    public  bool tileClicked = false;
 
 
     private void Start() {
+        PV = GetComponent<PhotonView>();
+        ctrl = this;
         SetAllBoardTiles();
         SetAllNextTiles();
     }
 
     private void Update() 
     {
-        if(this.GetPlayer().getPlayerClicked())
-        {
-            if (!displayCalledOnce)
-            this.GetPlayer().getTile().getMovements();
-            this.displayCalledOnce = true;
-        }
 
-        if (this.displayCalledOnce)
-        {
-            Debug.Log("update");
-            MovePlayer();
-        }
     }
 
     #region Accessors
 
     CharacterControl GetPlayer()
     {
-        return this.m_player;
+        return this.m_character;
+    }
+
+    public Tile GetTile(int h, int v)
+    {
+        Tile tile = null;
+        foreach (Tile temp in m_gameBoardI)
+        {
+            if (temp.getPositionH().Equals(h) && temp.getPositionV().Equals(v))
+                tile = temp;
+        }
+        return tile;
     }
     #endregion
 
@@ -69,7 +77,7 @@ public class Controller : MonoBehaviour {
                 {
                     newTile.name = "TileG_PlayerStart " + i + j;
                     newTileVar.setPlayer(true);
-                    this.m_player.setTile(newTileVar);
+                    this.m_character.setTile(newTileVar);
 
                     
                 }
@@ -96,27 +104,47 @@ public class Controller : MonoBehaviour {
         }
     }
 
-    void DesactiveAllTileSelectorIndicator()
+    public void DesactiveAllTileSelectorIndicator()
     {
         foreach (Tile tile in m_gameBoardI)
         {
-            tile.DesactivateSelectorIndicator();
+            tile.setSelectorIndicator(false);
         }
     }
-
-    void MovePlayer()
+    
+    public void MovePlayrRec(Tile tilePlayer)
     {
-        foreach (Tile tile in this.m_gameBoardI)
+        PV.RPC("MovePlayer", RpcTarget.AllBuffered, tilePlayer);
+    }
+
+    [PunRPC]
+    public void MovePlayer(Tile tilePlayer)
+    {
+        Vector3 posTile = tilePlayer.transform.position;
+        Vector3 posCharacter = GetPlayer().transform.position;
+        Vector3 dir = posTile - posCharacter;
+        string direction = "";
+        if (dir.Equals(new Vector3(1, 0, 0)))
         {
-            if (tile.hasPlayer() && (GetPlayer().getTile().getPositionH() != tile.getPositionH() || GetPlayer().getTile().getPositionV() != tile.getPositionV()))
-            {
-                Debug.Log("tiles" + tile.getPositionH() + tile.getPositionV());
-                int child =(((int) tile.getPosition().GetValue(0)) -1)  * this.m_side + ((int) tile.getPosition().GetValue(1)) -1  ;
-                GetPlayer().getTile().setPlayer(false);
-                GetPlayer().MoveAtPointerSelection(this.transform.GetChild(child).gameObject);
-                ResetBeforeAction();
-            }
+            direction = "east";
         }
+        if (dir.Equals(new Vector3(0, 0, -1)))
+        {
+            direction = "south";
+        }
+        if (dir.Equals(new Vector3(-1, 0, 0)))
+        {
+            direction = "ouest";
+        }
+        if (dir.Equals(new Vector3(0, 0, 1)))
+        {
+            direction = "north";
+        }
+        Debug.Log(direction);
+        GetPlayer().getTile().setPlayer(false);
+        GetPlayer().setTile(tilePlayer);
+        GetPlayer().StartMove(direction);
+        ResetBeforeAction();
     }
     void ResetBeforeAction()
     {

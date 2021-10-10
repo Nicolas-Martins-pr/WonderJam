@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
@@ -15,13 +17,13 @@ public class Tile : MonoBehaviour
     public bool m_endPlayer2;
 
     public bool m_active = false;
-    public List<Tile> m_nextTiles = new List<Tile>();  //Group of different Tile free to move 
+    public List<Tile> m_AdjacentTiles = new List<Tile>();  //Group of different Tile free to move 
 
     public GameObject m_selectorIndicator;
+
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -71,9 +73,9 @@ public class Tile : MonoBehaviour
     {
         return !this.hasMountain() && !this.hasWater();
     }
-    public List<Tile> getNextTiles()
+    public List<Tile> GetAdjacentTiles()
     {
-        return this.m_nextTiles;
+        return this.m_AdjacentTiles;
     }
 
     public bool isActive()
@@ -123,57 +125,96 @@ public class Tile : MonoBehaviour
         {
             if (tile.getPositionH() == this.getPositionH() -1 && tile.getPositionV() == this.getPositionV() || tile.getPositionH() == this.getPositionH() +1 && tile.getPositionV() == this.getPositionV() || tile.getPositionV() == this.getPositionV() -1 && tile.getPositionH() == this.getPositionH()||tile.getPositionV() == this.getPositionV() +1 && tile.getPositionH() == this.getPositionH())
             {
-                this.m_nextTiles.Add(tile);
+                this.m_AdjacentTiles.Add(tile);
             }
         }
+        setSelectorIndicator(false);
     }
     public List<Tile> getMovements()
     {
         List<Tile> walkableTiles = new List<Tile>();
-        List<Tile> tiles = this.getNextTiles();
+        List<Tile> tiles = this.GetAdjacentTiles();
         foreach (Tile tile in tiles)
         {
             if (tile.isWalkable())
             {
                 walkableTiles.Add(tile);
-                tile.ActivateSelectorIndicator();
-                tile.setActive(true);
+                tile.setSelectorIndicator(true);
             }
             
         }
         return walkableTiles;
     }
 
-    void ActivateSelectorIndicator()
-    {   
-        if (this.m_selectorIndicator.activeSelf)
-        {
-            this.m_selectorIndicator.SetActive(false);
-        }
-        else
-            this.m_selectorIndicator.SetActive(true);
+    public void setSelectorIndicator(bool active)
+    {
+        this.m_selectorIndicator.SetActive(active);
+        this.setActive(active);
     }
 
-    public void DesactivateSelectorIndicator()
-    {
-        this.m_selectorIndicator.SetActive(false);
-        this.setActive(false);
-    }
-    
- 
     #endregion
-    
+
     #region OnClick
-         
+
     void OnMouseUp() 
     {
-          
-        if(isActive())
+        if(this.isActive())
         {
-            this.setPlayer(true); 
-        } 
+            this.setPlayer(true);
+            Controller.ctrl.MovePlayrRec(this);
+        }
     }
 
+    public static object Deserialize(byte[] data)
+    {
+        Debug.Log("deserialize");
 
+        byte[] hb = new byte[4];
+        Array.Copy(data, 0, hb, 0, hb.Length);
+        if (BitConverter.IsLittleEndian)
+            Array.Reverse(hb);
+        int h = BitConverter.ToInt32(hb,0);
+
+        byte[] vb = new byte[4];
+        Array.Copy(data, 4,vb, 0, vb.Length);
+        if (BitConverter.IsLittleEndian)
+            Array.Reverse(vb);
+        int v = BitConverter.ToInt32(vb, 0);
+
+        Debug.Log(h + " " + v);
+        Tile tile = Controller.ctrl.GetTile(h,v);
+        return tile;
+    }
+
+    public static byte[] Serialize(object obj)
+    {
+        Debug.Log("serialize");
+        var tile = (Tile)obj;
+        Debug.Log(tile.getPositionH()+ " "+ tile.getPositionV());
+
+        byte[] h = BitConverter.GetBytes(tile.getPositionH());
+        if (BitConverter.IsLittleEndian)
+            Array.Reverse(h);
+
+        byte[] v = BitConverter.GetBytes(tile.getPositionV());
+        if (BitConverter.IsLittleEndian)
+            Array.Reverse(v);
+
+        Byte[] data = new byte[2*4];
+
+        return JoinBytes(h,v);
+    }
+
+    private static byte[] JoinBytes(params byte[][] arrays)
+    {
+        byte[] rv = new byte[arrays.Sum(a => a.Length)];
+        int offset = 0;
+        foreach (byte[] array in arrays)
+        {
+            System.Buffer.BlockCopy(array, 0, rv, offset, array.Length);
+            offset += array.Length;
+        }
+        return rv;
+    }
     #endregion
 }
