@@ -14,7 +14,6 @@ public class PlaceHolder : MonoBehaviour
         else
         {
             int parentIndex = this.transform.parent.GetSiblingIndex();
-            Debug.Log("click card " + parentIndex);
             GameTurnSystem.GTS.selectCardRec(parentIndex);
         }
         

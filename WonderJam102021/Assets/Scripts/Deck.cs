@@ -76,6 +76,10 @@ public class Deck : MonoBehaviour
         {
             limit = 3;
         }
+        else if (GameTurnSystem.GTS.player.myCards.Count == 4)
+        {
+            limit = 0;
+        }
         else
         {
             limit = 1;

@@ -139,10 +139,13 @@ PrefabInstance:
       propertyPath: m_Text
       value: 'Waiting for oponnent...
 
-        Consider ping wonderjam discord
+        Consider ping wonderjam discord,
 
-        or
-        ask a friend'
+        ask
+        a friend to play with you
+
+        or play against yourself with an other
+        instance of the game'
       objectReference: {fileID: 0}
     - target: {fileID: 3720426295884771075, guid: f48a6ae66a4d8924fb76306386604293, type: 3}
       propertyPath: m_Name

@@ -49,6 +49,11 @@ MonoBehaviour:
   - selectCard
   - cancelCard
   - RemoveCardFromDeck
+  - drawChance
+  - DrawChance
+  - setResult
+  - PlayCharacter
+  - PlayCard
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
