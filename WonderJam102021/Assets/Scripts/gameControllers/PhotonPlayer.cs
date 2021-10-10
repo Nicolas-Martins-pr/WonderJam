@@ -32,9 +32,10 @@ public class PhotonPlayer : MonoBehaviour
 
             // spawn cam and script
             myAvatar = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerAvatar"),
-                GameSetup.GS.spawnPoints[1].position,
-                GameSetup.GS.spawnPoints[1].rotation, 0);
-            myAvatar.transform.parent = GameSetup.GS.spawnPoints[1].transform.parent;
+                GameSetup.GS.spawnPoints[2].position,
+                GameSetup.GS.spawnPoints[2].rotation, 0);
+            myAvatar.transform.parent = GameSetup.GS.spawnPoints[2].transform.parent;
+            myAvatar.transform.GetChild(0).GetComponent<SmoothCam>().spawnPoint = GameSetup.GS.spawnPoints[1].gameObject;
 
             //make background visible
             GameObject.Find("BackgroundCanvas").GetComponent<Canvas>().worldCamera = myAvatar.transform.GetChild(0).GetComponent<Camera>();
