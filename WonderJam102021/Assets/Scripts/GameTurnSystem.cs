@@ -39,7 +39,7 @@ public class GameTurnSystem : MonoBehaviour
         state = TurnState.Card;
         phase.text = "Phase: "+state;
         coInst = StartCoroutine(Timer(120));
-        Deck.deck.GiveCard();
+        Deck.deck.GiveCard(PhotonRoom.room.playerId);
         //Quand les deux joueurs on joué, faire le test de la win
         if (win)
         {

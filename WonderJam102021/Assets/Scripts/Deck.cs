@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,12 +13,15 @@ public class Deck : MonoBehaviour
     public enum cardName { One_Case, Two_Case, MoveTP, Create, teleport, Earthquake, Joker,}
     public List<GameObject> myGameObjects;
     public GameObject discard;
+    public PhotonView PV;
     private int i = 0;
     private GameObject card;
+
     
     void Start()
     {
         deck = this;
+        PV = GetComponent<PhotonView>();
     }
 
     private void fillCards()
@@ -61,10 +65,10 @@ public class Deck : MonoBehaviour
         }
     }
     
-    public void GiveCard()
+    public void GiveCard(int playerId)
     {
         if (myGameObjects.Count == 0)
-            fillCards();
+            DiscardToDeck();
 
         int limit;
         if (GameTurnSystem.GTS.player.myCards.Count <= 0)
@@ -78,10 +82,23 @@ public class Deck : MonoBehaviour
         for (int j = 0; j < limit; j++)
         {
             int r= Random.Range(0,this.transform.childCount);
-            GameObject card = this.transform.GetChild(r).gameObject;
-            GameTurnSystem.GTS.player.addCard(card);
-            //A changer pour les spawn dans les spawn point
+            PV.RPC("removeCard", RpcTarget.AllBuffered, r, playerId);
+            //A changer pour les spawn dans les spawn poin
+        }
+    }
 
+    [PunRPC]
+    public void removeCard(int CardIndex, int playerId)
+    {
+        if (PhotonRoom.room.playerId == playerId)
+        {
+            GameObject card = this.transform.GetChild(CardIndex).gameObject;
+            GameTurnSystem.GTS.player.addCard(card);
+        }
+        else
+        {
+            GameObject card = this.transform.GetChild(CardIndex).gameObject;
+            DiscardCard(card);
         }
     }
 
@@ -93,10 +110,19 @@ public class Deck : MonoBehaviour
 
     public void DiscardToDeck()
     {
-        for (int j = 0; j < discard.transform.childCount; j++)
+        //clean discard
+        int nbcarddi = discard.transform.childCount;
+        for (int j = 0; j < nbcarddi; j++)
         {
-            int r = Random.Range(0, discard.transform.childCount);
-            discard.transform.GetChild(r).SetParent(this.transform);
+            Destroy(discard.transform.GetChild(0));
         }
+        //clean deck
+        int nbcardde = this.transform.childCount;
+        for (int j = 0; j < nbcardde; j++)
+        {
+            Destroy(this.transform.GetChild(0));
+        }
+        //refill deck
+        fillCards();
     }
 }

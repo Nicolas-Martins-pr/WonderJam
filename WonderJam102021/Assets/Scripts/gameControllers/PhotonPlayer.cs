@@ -54,7 +54,7 @@ public class PhotonPlayer : MonoBehaviour
             }
 
             //get firts cards
-            Deck.deck.GiveCard();
+            Deck.deck.GiveCard(PhotonRoom.room.playerId);
         }
         
         
