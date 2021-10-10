@@ -10,16 +10,14 @@ public enum TurnState {Start, PlayerTurn, Card,End}
 public class GameTurnSystem : MonoBehaviour
 {
     public TurnState state;
-    public GameObject goDeck;
-    public GameObject player;
-    public GameObject ennemy;
-    public GameObject character;
-    private CanvasScaler.Unit playerUnit;
-    private CanvasScaler.Unit ennemyUnit;
+    public GameObject playedCard;
+    public GameObject discarded;
     public Text phase;
     public Text countdownText;
     public bool win;
     private Coroutine coInst = null;
+    private Deck deckos;
+    public Camera camera;
     void Start()
     {
         
@@ -28,18 +26,14 @@ public class GameTurnSystem : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-       
-    }
 
     void SetupTurn()
     {
         state = TurnState.Start;
         phase.text = "Phase: " + state;
-        Timer(5);
-        PlayindCard();
-        
+        coInst=StartCoroutine(Timer(5));
+        Deck.deck.GiveCard(camera);
+        //il faut implémenter l'animator pour terminer cette phase du jeu
     }
 
     void PlayindCard()
@@ -47,6 +41,7 @@ public class GameTurnSystem : MonoBehaviour
         state = TurnState.Card;
         phase.text = "Phase: "+state;
         coInst = StartCoroutine(Timer(30));
+        //Quand les deux joueurs on joué, faire le test de la win
         if (win)
         {
             StopCoroutine(coInst);
@@ -58,6 +53,8 @@ public class GameTurnSystem : MonoBehaviour
 
     public void PlayerPlay()
     {
+        state = TurnState.PlayerTurn;
+        phase.text = "Phase: "+state;
         coInst = StartCoroutine(Timer(30));
     }
     public void OnEndTurn()
@@ -67,6 +64,7 @@ public class GameTurnSystem : MonoBehaviour
             phase.text = "Not your turn";
             return;
         }
+        StopCoroutine(coInst);
         state = TurnState.Start;
         SetupTurn();
     }
@@ -87,6 +85,10 @@ public class GameTurnSystem : MonoBehaviour
         }else if(state==TurnState.Card)
         {
             PlayerPlay();
+        }
+        else if (state==TurnState.Start)
+        {
+            PlayindCard();
         }
 
     }
