@@ -53,6 +53,7 @@ public class Portal : MonoBehaviour
         this.m_currentTile = tile;
         tile.setPortal(true);                       // new portal appear
         SetFreePortalMovement();
+        Controller.ctrl.DesactiveAllTileSelectorIndicator();
     }
     #endregion
 
@@ -78,6 +79,23 @@ public class Portal : MonoBehaviour
                 this.m_freePortalMovement.Add(tile);
             }
         }
+    }
+
+    public List<Tile> getMovementPortal()
+    {
+        List<Tile> walkableTiles = new List<Tile>();
+        List<Tile> tiles = this.m_freePortalMovement;
+        foreach (Tile tile in tiles)
+        {
+            if (tile.isWalkable() || !tile.hasPortal())
+            {
+                walkableTiles.Add(tile);
+                tile.setSelectorIndicator(true);
+                tile.setPortalActif(this);
+            }
+            
+        }
+        return walkableTiles;
     }
 
 

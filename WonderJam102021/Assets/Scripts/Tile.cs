@@ -23,11 +23,13 @@ public class Tile : MonoBehaviour
     public List<GameObject> trees;
     public GameObject ruin;
     public GameObject portal;
+    public Portal portalActif;
 
     public GameObject gateHeaven;
     public GameObject gateHell;
 
     public bool m_active = false;
+    public bool m_activePortal = false; // singleton for move one portal position
     public List<Tile> m_AdjacentTiles = new List<Tile>();  //Group of different Tile free to move 
 
     public GameObject m_selectorIndicator;
@@ -123,13 +125,13 @@ public class Tile : MonoBehaviour
     public void setMountain(bool value)
     {
         this.m_mountain = value;
-        this.mountain.SetActive(true);
+        this.mountain.SetActive(value);
         
     }
     public void setRuin(bool value)
     {
         this.m_ruin = value;
-        this.ruin.SetActive(true);
+        this.ruin.SetActive(value);
     }
     public void setPlayer(bool value)
     {
@@ -151,6 +153,16 @@ public class Tile : MonoBehaviour
     {
         this.portal.SetActive(value);
         this.m_portal = value;
+    }
+
+    public void setActivePortal(bool value)
+    {
+        this.m_activePortal = value;
+    }
+
+    public void setPortalActif(Portal portal) // 
+    {
+        this.portalActif = portal;
     }
 
     public void setGateHeaven(bool value)
@@ -209,7 +221,11 @@ public class Tile : MonoBehaviour
 
     void OnMouseUp() 
     {
-        if(this.isActive())
+        if (this.m_activePortal)
+        {
+            this.portalActif.SetCurrentTile(this);
+        }
+        else if(this.isActive())
         {
             this.setPlayer(true);
             Controller.ctrl.MovePlayrRec(this);

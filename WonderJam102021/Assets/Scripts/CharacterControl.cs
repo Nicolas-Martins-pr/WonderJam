@@ -67,7 +67,9 @@ public class CharacterControl : MonoBehaviourPunCallbacks
 
     public void UsePortal() // need checkPortal true before
     {
-        this.setTile(this.getTile().GetPortal().getExitPortal().GetCurrentTile());
+        if( checkPortal()){
+            this.setTile(this.getTile().GetPortal().getExitPortal().GetCurrentTile());
+        }
     }
 
 
