@@ -10,7 +10,8 @@ using Random = UnityEngine.Random;
 public class Deck : MonoBehaviour
 {
     public static Deck deck;
-    public enum cardName { One_Case, Two_Case, MoveTP, Create, teleport, Earthquake, Joker,}
+    //                         0        1        2       3        4          5         6
+    public enum cardName { One_Case, Two_Case, MoveTP, Create, Teleport, Earthquake, Joker,}
     public List<GameObject> myGameObjects;
     public GameObject discard;
     public PhotonView PV;
@@ -82,13 +83,13 @@ public class Deck : MonoBehaviour
         for (int j = 0; j < limit; j++)
         {
             int r= Random.Range(0,this.transform.childCount);
-            PV.RPC("removeCard", RpcTarget.AllBuffered, r, playerId);
+            PV.RPC("RemoveCardFromDeck", RpcTarget.AllBuffered, r, playerId);
             //A changer pour les spawn dans les spawn poin
         }
     }
 
     [PunRPC]
-    public void removeCard(int CardIndex, int playerId)
+    public void RemoveCardFromDeck(int CardIndex, int playerId)
     {
         if (PhotonRoom.room.playerId == playerId)
         {

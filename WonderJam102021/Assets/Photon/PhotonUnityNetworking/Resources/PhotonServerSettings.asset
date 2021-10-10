@@ -46,6 +46,9 @@ MonoBehaviour:
   - MovePlayer
   - movePlayer
   - removeCard
+  - selectCard
+  - cancelCard
+  - RemoveCardFromDeck
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
