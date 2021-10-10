@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -42,6 +43,7 @@ public class Tile : MonoBehaviour
     public List<Tile> m_AllWakable = new List<Tile>();
 
     public GameObject m_selectorIndicator;
+
 
     // Start is called before the first frame update
     void Start()
@@ -139,24 +141,26 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public void setState(int state){
+    public void setState(int _state){
+        Debug.Log("avant" + _state);
         clearState();
-        if(state == 0){
-            
+        Debug.Log("apres" + _state);
+        if (_state == 0)
+        {
+
         }
-        else if (state ==1)
+        else if (_state == 1)
         {
             this.setMountain(true);
         }
-        else if (state ==2)
+        else if (_state == 2)
         {
-            this.setTree(true);   
+            this.setTree(true);
         }
-        else if (state ==3)
+        else if (_state == 3)
         {
             this.setRuin(true);
         }
-
 
     }
     public void clearState(){
@@ -397,12 +401,11 @@ public class Tile : MonoBehaviour
 
         //Ajout Lucas
         byte[] sb = new byte[4];
-        Array.Copy(data, 8,vb, 0, vb.Length);
+        Array.Copy(data, 8, sb, 0, sb.Length);
         if (BitConverter.IsLittleEndian)
-            Array.Reverse(vb);
+            Array.Reverse(sb);
         int s = BitConverter.ToInt32(sb, 0);
-        Tile tile = Controller.ctrl.GetTile(h,v);
-        tile.setState(s);
+        Tile tile = Controller.ctrl.SetTileState(h, v, s);
         return tile;
     }
 

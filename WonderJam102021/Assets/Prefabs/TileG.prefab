@@ -199,6 +199,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_positionV: 0
   m_positionH: 0
+  state: 0
   m_mountain: 0
   m_ruin: 0
   m_water: 0
@@ -213,11 +214,20 @@ MonoBehaviour:
   - {fileID: 5500047288739111213}
   ruin: {fileID: 5303525971582961682}
   portal: {fileID: 5168947140103708360}
+  portalActif: {fileID: 0}
   gateHeaven: {fileID: 4672054610599825576}
   gateHell: {fileID: 1402420985603805569}
   m_active: 0
+  m_activePortal: 0
+  selectPortal: 0
+  m_activeSetObstacle: 0
+  m_activeRemoveObstacle: 0
   m_AdjacentTiles: []
+  m_AdjacentTiles2: []
+  m_AllObstacles: []
+  m_AllWakable: []
   m_selectorIndicator: {fileID: 9021222946070594991}
+  PV: {fileID: 0}
 --- !u!65 &7379321570820768636
 BoxCollider:
   m_ObjectHideFlags: 0
