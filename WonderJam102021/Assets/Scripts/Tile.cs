@@ -13,6 +13,8 @@ public class Tile : MonoBehaviour
     public bool m_ruin;
     public bool m_water;
     public bool m_tree;
+
+    public bool m_portal;
     public bool m_player =false;
     public bool m_endPlayer1;
     public bool m_endPlayer2;
@@ -58,6 +60,11 @@ public class Tile : MonoBehaviour
         int[] position = new int[2] {this.getPositionH(),this.getPositionV()};
         return position;
     }
+
+    public Portal GetPortal()
+    {
+        return this.portal.GetComponent<Portal>();
+    }
     public bool hasMountain() 
     {
         return this.m_mountain;
@@ -81,6 +88,11 @@ public class Tile : MonoBehaviour
     public bool hasPlayer() 
     {
         return this.m_player;
+    }
+
+    public bool hasPortal()
+    {
+        return this.m_portal;
     }
 
     public bool isWalkable()
@@ -133,6 +145,12 @@ public class Tile : MonoBehaviour
         int wTree = (int) (UnityEngine.Random.value * 2);
         Debug.Log(wTree);
         this.trees[wTree].SetActive(value) ;
+    }
+
+    public void setPortal(bool value)
+    {
+        this.portal.SetActive(value);
+        this.m_portal = value;
     }
 
     public void setGateHeaven(bool value)
