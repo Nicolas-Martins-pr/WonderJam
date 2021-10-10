@@ -354,7 +354,8 @@ public class Tile : MonoBehaviour
             portal.GetComponent<Portal>().getMovementPortal();
         }
         if (this.m_activeSetObstacle)
-        {  this.m_activeSetObstacle = false;
+        { 
+            this.m_activeSetObstacle = false;
             this.setState(2);
             Controller.ctrl.updateState(this);
         }
