@@ -17,7 +17,8 @@ public class Tile : MonoBehaviour
     public bool m_water;
     public bool m_tree;
 
-    public bool m_portal;
+
+    public bool m_portal =false;
     public bool m_player =false;
     public bool m_endPlayer1;
     public bool m_endPlayer2;
@@ -105,8 +106,7 @@ public class Tile : MonoBehaviour
         return this.m_player;
     }
 
-    public bool hasPortal()
-    {
+    public bool hasPortal(){
         return this.m_portal;
     }
 
@@ -125,7 +125,12 @@ public class Tile : MonoBehaviour
     }
 
     public void getState(){
-        if(this.isWalkable())
+        
+         if (this.hasPortal())
+        {
+            this.state = 4;
+        }
+        else if(this.isWalkable())
         {
             this.state = 0;
         }
@@ -141,6 +146,7 @@ public class Tile : MonoBehaviour
         {
             this.state = 3;
         }
+ 
     }
 
     public void setState(int _state){
@@ -170,6 +176,7 @@ public class Tile : MonoBehaviour
         this.setMountain(false);
         this.setRuin(false);
         this.setTree(false);
+        // this.setPortal(false);
     }
     #endregion
 
@@ -218,7 +225,7 @@ public class Tile : MonoBehaviour
     {
         this.portal.SetActive(value);
         this.m_portal = value;
-    }
+   }
 
     public void setActivePortal(bool value)
     {
