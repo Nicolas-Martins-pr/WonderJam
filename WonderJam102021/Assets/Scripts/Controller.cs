@@ -307,8 +307,8 @@ public class Controller : MonoBehaviour {
     {
         foreach (Tile tile in m_gameBoardI)
         {
-            tile.SetAdjacentTiles(m_gameBoardI);
-            tile.SetAdjacentTiles(m_gameBoardI, 1);
+            tile.SetAdjacentTiles(m_gameBoardI,this.m_character.checkPortal());
+            tile.SetAdjacentTiles(m_gameBoardI, this.m_character.checkPortal(),1);
         }
     }
 

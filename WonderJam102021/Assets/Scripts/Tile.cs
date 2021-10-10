@@ -254,7 +254,7 @@ public class Tile : MonoBehaviour
 
     #region Utils
 
-    public void SetAdjacentTiles(List<Tile> boardtiles, int nbMove = 0) // optimisable
+    public void SetAdjacentTiles(List<Tile> boardtiles, bool portail= false, int nbMove = 0) // optimisable
     {   
         if (nbMove == 0)
         {
@@ -268,6 +268,7 @@ public class Tile : MonoBehaviour
                 this.m_AdjacentTiles.Add(tile);
             }
         }
+        this.m_AdjacentTiles.Add(this.portal.GetComponent<Portal>().getExitPortal().m_currentTile);
         }
         else
         {
