@@ -9,18 +9,17 @@ using UnityEngine.UI;
 public enum TurnState {Start, PlayerTurn, Card,End}
 public class GameTurnSystem : MonoBehaviour
 {
+    public static GameTurnSystem GTS;
     public TurnState state;
-    public GameObject playedCard;
-    public GameObject discarded;
     public Text phase;
     public Text countdownText;
     public bool win;
     private Coroutine coInst = null;
-    private Deck deckos;
-    public Camera camera;
+    public Transform CardOrigin;
+    public PhotonPlayer player;
     void Start()
     {
-        
+        GTS = this;
         SetupTurn();
         
     }
@@ -31,31 +30,31 @@ public class GameTurnSystem : MonoBehaviour
     {
         state = TurnState.Start;
         phase.text = "Phase: " + state;
-        coInst=StartCoroutine(Timer(5));
-        Deck.deck.GiveCard(camera);
+        coInst=StartCoroutine(Timer(10));
         //il faut implémenter l'animator pour terminer cette phase du jeu
     }
 
-    void PlayindCard()
+    void PlayCard()
     {
         state = TurnState.Card;
         phase.text = "Phase: "+state;
-        coInst = StartCoroutine(Timer(30));
+        coInst = StartCoroutine(Timer(120));
+        Deck.deck.GiveCard();
         //Quand les deux joueurs on joué, faire le test de la win
         if (win)
         {
             StopCoroutine(coInst);
             state = TurnState.PlayerTurn;
-            PlayerPlay();
+            PlayCharacter();
             
         }
     }
 
-    public void PlayerPlay()
+    public void PlayCharacter()
     {
         state = TurnState.PlayerTurn;
         phase.text = "Phase: "+state;
-        coInst = StartCoroutine(Timer(30));
+        coInst = StartCoroutine(Timer(120));
     }
     public void OnEndTurn()
     {
@@ -84,11 +83,11 @@ public class GameTurnSystem : MonoBehaviour
 
         }else if(state==TurnState.Card)
         {
-            PlayerPlay();
+            PlayCharacter();
         }
         else if (state==TurnState.Start)
         {
-            PlayindCard();
+            PlayCard();
         }
 
     }

@@ -131,7 +131,6 @@ public class Tile : MonoBehaviour
     {
         this.m_tree = value;
         int wTree = (int) (UnityEngine.Random.value * 2);
-        Debug.Log(wTree);
         this.trees[wTree].SetActive(value) ;
     }
 
@@ -197,7 +196,9 @@ public class Tile : MonoBehaviour
             Controller.ctrl.MovePlayrRec(this);
         }
     }
+    #endregion
 
+    #region serialize
     public static object Deserialize(byte[] data)
     {
         Debug.Log("deserialize");
@@ -232,8 +233,6 @@ public class Tile : MonoBehaviour
         byte[] v = BitConverter.GetBytes(tile.getPositionV());
         if (BitConverter.IsLittleEndian)
             Array.Reverse(v);
-
-        Byte[] data = new byte[2*4];
 
         return JoinBytes(h,v);
     }

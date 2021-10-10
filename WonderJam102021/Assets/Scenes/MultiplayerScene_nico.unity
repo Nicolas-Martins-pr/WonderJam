@@ -879,6 +879,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_side: 11
+  m_nbTrees: 10
+  m_nbMountain: 10
+  m_nbRuins: 10
+  m_nbPortals: 2
   m_board: {fileID: 415956910}
   gameBoard: []
   m_gameBoardI: []
