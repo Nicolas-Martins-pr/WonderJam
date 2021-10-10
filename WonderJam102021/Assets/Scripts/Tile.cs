@@ -130,7 +130,7 @@ public class Tile : MonoBehaviour
     public void setTree(bool value)
     {
         this.m_tree = value;
-        int wTree = (int) (Random.value * 2);
+        int wTree = (int) (UnityEngine.Random.value * 2);
         Debug.Log(wTree);
         this.trees[wTree].SetActive(value) ;
     }
