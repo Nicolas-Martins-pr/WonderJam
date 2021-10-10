@@ -9,6 +9,10 @@ public class Controller : MonoBehaviour {
 
     public int m_side = 7; // must be odd
 
+    public int m_nbTrees = 10;
+    public int m_nbMountain = 10;
+    public int m_nbRuins = 10;
+    public int m_nbPortals = 2;
     public GameObject m_board;
     
     public Tile[] gameBoard;
@@ -28,6 +32,7 @@ public class Controller : MonoBehaviour {
         PV = GetComponent<PhotonView>();
         ctrl = this;
         SetAllBoardTiles();
+        GenerateObstacleZone();
         SetAllNextTiles();
     }
 
@@ -75,25 +80,113 @@ public class Controller : MonoBehaviour {
                 // Instantiate()
                 if(j== half && i == 0)
                 {
+                    
                     newTile.name = "TileG_PlayerStart " + i + j;
                     newTileVar.setPlayer(true);
                     this.m_character.setTile(newTileVar);
 
                     
                 }
-                if(j== 0 && i ==this.m_side - 1)
+                else if(j== 0 && i ==this.m_side - 1)
                 {
                     newTile.name = "TileG_EndPlayer1 " + i + j;
                     newTileVar.m_endPlayer1 = true;
+                    newTileVar.setGateHell(true);
                 }
-                if (j== m_side-1 && i == m_side -1)
+                else if (j== m_side-1 && i == m_side -1)
                 {
                     newTile.name = "TileG_EndPlayer2 " + i + j;
                     newTileVar.m_endPlayer2 = true;
+                    newTileVar.setGateHeaven(true);
+                }
+                else
+                {
+                    RotateTile(newTile);
                 }
                 this.m_gameBoardI.Add(newTileVar);
             }
         }
+    }
+    void RotateTile(GameObject tile)
+    {
+        int nbRotation =(int) (Random.value * 4);
+        if (nbRotation == 0)
+        {
+            tile.transform.Rotate(new Vector3(0,90,0));
+        }
+        else if (nbRotation == 1)
+        {
+            tile.transform.Rotate(new Vector3(0,180,0));
+
+        }
+         else if (nbRotation == 2)
+        {
+            tile.transform.Rotate(new Vector3(0,270,0));
+
+        }
+
+    }
+     void GenerateObstacleZone()
+    {
+        int nbtree = this.m_nbTrees, nbmountain = this.m_nbMountain, nbruin = this.m_nbRuins;
+        int rand3 = (int)(Random.value * 3);
+
+        int row = (int) (Random.value * m_side), column = (int) (Random.value * m_side); 
+        while (nbtree != 0 || nbruin != 0 || nbmountain != 0)
+        {
+            row = (int) (Random.value * m_side);
+            column = (int) (Random.value * m_side); 
+
+            rand3 = (int)(Random.value * 3);
+            if ((column == m_side/2 && row == 0) || (column == 0 && row == m_side -1) || (column == m_side -1 && row == m_side -1) ){}
+            else
+            {
+                Tile tile = (m_gameBoardI[row*m_side + column]);
+                if (tile.isWalkable())
+                {
+                    if (rand3 == 0)
+                    {
+                        if (nbtree != 0)
+                        {
+                            tile.setTree(true);
+                            nbtree-=1;
+                        }
+                        else
+                        {
+                            rand3 = 1;
+                        }
+                        
+                    }
+                    if (rand3 == 1)
+                    {
+                        if (nbmountain != 0)
+                        {
+                            tile.setMountain(true);
+                            nbmountain-=1;
+                        }
+                        else
+                        {
+                            rand3 = 2;
+                        }
+                        
+                    }
+                    if (rand3 == 2)
+                    {
+                        if (nbruin != 0)
+                        {
+                            tile.setRuin(true);
+                            nbruin-=1;
+                        }
+                        else
+                        {
+                            rand3 = 0;
+                        }
+                    }
+                
+                }
+            }
+        }
+
     }
 
     void SetAllNextTiles()
@@ -146,6 +239,8 @@ public class Controller : MonoBehaviour {
         GetPlayer().StartMove(direction);
         ResetBeforeAction();
     }
+
+   
     void ResetBeforeAction()
     {
         DesactiveAllTileSelectorIndicator();

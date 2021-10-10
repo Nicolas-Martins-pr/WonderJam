@@ -10,11 +10,20 @@ public class Tile : MonoBehaviour
     public int m_positionV;
     public int m_positionH;
     public bool m_mountain;
+    public bool m_ruin;
     public bool m_water;
-    public bool m_trap;
+    public bool m_tree;
     public bool m_player =false;
     public bool m_endPlayer1;
     public bool m_endPlayer2;
+
+    public GameObject mountain;
+    public List<GameObject> trees;
+    public GameObject ruin;
+    public GameObject portal;
+
+    public GameObject gateHeaven;
+    public GameObject gateHell;
 
     public bool m_active = false;
     public List<Tile> m_AdjacentTiles = new List<Tile>();  //Group of different Tile free to move 
@@ -54,14 +63,19 @@ public class Tile : MonoBehaviour
         return this.m_mountain;
     }
 
+    public bool hasRuin()
+    {
+        return this.m_ruin;
+    }
+
     public bool hasWater() 
     {
         return this.m_water;
     }
 
-    public bool hasTrap() 
+    public bool hasTree() 
     {
-        return this.m_trap;
+        return this.m_tree;
     }
 
     public bool hasPlayer() 
@@ -71,7 +85,7 @@ public class Tile : MonoBehaviour
 
     public bool isWalkable()
     {
-        return !this.hasMountain() && !this.hasWater();
+        return !this.hasMountain() && !this.hasWater() && !this.hasRuin() && !this.hasTree();
     }
     public List<Tile> GetAdjacentTiles()
     {
@@ -94,21 +108,40 @@ public class Tile : MonoBehaviour
     {
         this.m_positionV = value;
     }
-    public void setMountain()
+    public void setMountain(bool value)
     {
-        this.m_mountain = !this.m_mountain;
+        this.m_mountain = value;
+        this.mountain.SetActive(true);
+        
+    }
+    public void setRuin(bool value)
+    {
+        this.m_ruin = value;
+        this.ruin.SetActive(true);
     }
     public void setPlayer(bool value)
     {
         this.m_player = value;
     }
-    public void setWater()
+    public void setWater(bool value)
     {
         this.m_water = !this.m_water;
     }
-    public void setTrap()
+    public void setTree(bool value)
     {
-        this.m_trap = !this.m_trap;
+        this.m_tree = value;
+        int wTree = (int) (Random.value * 2);
+        Debug.Log(wTree);
+        this.trees[wTree].SetActive(value) ;
+    }
+
+    public void setGateHeaven(bool value)
+    {
+        this.gateHeaven.SetActive(value);
+    }
+    public void setGateHell(bool value)
+    {
+        this.gateHell.SetActive(value);
     }
 
     public void setActive(bool value)
