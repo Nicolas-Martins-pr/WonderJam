@@ -21,6 +21,7 @@ public class Controller : MonoBehaviour {
     public CharacterControl m_character;
     public GameObject prefabTileG;
     public GameObject prefabTileW;
+    private Tile tile;
 
     private PhotonView PV;
 
@@ -38,6 +39,7 @@ public class Controller : MonoBehaviour {
 
     private void Update() 
     {
+       
 
     }
 
@@ -141,7 +143,7 @@ public class Controller : MonoBehaviour {
             if ((column == m_side/2 && row == 0) || (column == 0 && row == m_side -1) || (column == m_side -1 && row == m_side -1) ){}
             else
             {
-                Tile tile = (m_gameBoardI[row*m_side + column]);
+                 tile = (m_gameBoardI[row*m_side + column]);
                 if (tile.isWalkable())
                 {
                     if (rand3 == 0)
@@ -186,8 +188,22 @@ public class Controller : MonoBehaviour {
                 }
             }
         }
+        
 
     }
+
+     public void earthquake()
+     {
+         foreach (var ti in m_gameBoardI)
+         {
+             ti.setMountain(false);
+             ti.setRuin(false);
+             ti.setTree(false);
+             
+         }
+         GenerateObstacleZone();
+         
+     }
 
     void SetAllNextTiles()
     {

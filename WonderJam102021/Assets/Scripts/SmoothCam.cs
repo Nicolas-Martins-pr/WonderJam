@@ -34,7 +34,7 @@ public class SmoothCam : MonoBehaviour
 
                     transform.position = Vector3.SmoothDamp(transform.position,
                         GameSetup.GS.spawnPoints[0].transform.position, ref velocity, 2);
-                    //transform.position = Vector3.MoveTowards(transform.position,GameSetup.GS.spawnPoints[0].transform.position,mDelta);
+                   
                 }
 
                 if (Input.mousePosition.y <= 0 + mDelta)
@@ -42,7 +42,7 @@ public class SmoothCam : MonoBehaviour
                     // Move the camera
                     transform.position = Vector3.SmoothDamp(transform.position,
                         GameSetup.GS.spawnPoints[1].transform.position, ref velocity, 2);
-                    //transform.position = Vector3.MoveTowards(transform.position,GameSetup.GS.spawnPoints[1].position,mDelta);
+                 
                 }
             }
 
@@ -52,7 +52,7 @@ public class SmoothCam : MonoBehaviour
             {
                 transform.position =
                     Vector3.SmoothDamp(transform.position, spawnPoint.transform.position, ref velocity, 2);
-                //transform.position = Vector3.MoveTowards(transform.position,spawnPoint.transform.position,Time.deltaTime);
+               
 
             }
 

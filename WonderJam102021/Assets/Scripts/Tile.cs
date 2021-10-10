@@ -111,13 +111,13 @@ public class Tile : MonoBehaviour
     public void setMountain(bool value)
     {
         this.m_mountain = value;
-        this.mountain.SetActive(true);
+        this.mountain.SetActive(value);
         
     }
     public void setRuin(bool value)
     {
         this.m_ruin = value;
-        this.ruin.SetActive(true);
+        this.ruin.SetActive(value);
     }
     public void setPlayer(bool value)
     {
@@ -133,6 +133,12 @@ public class Tile : MonoBehaviour
         int wTree = (int) (UnityEngine.Random.value * 2);
         Debug.Log(wTree);
         this.trees[wTree].SetActive(value) ;
+        if (value==false)
+        {
+            this.trees[0].SetActive(false);
+            this.trees[1].SetActive(false);
+            
+        }
     }
 
     public void setGateHeaven(bool value)
