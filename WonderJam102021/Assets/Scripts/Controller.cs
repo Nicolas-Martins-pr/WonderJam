@@ -279,6 +279,8 @@ public class Controller : MonoBehaviour {
             updateStateRec(tile);
         }
         ResetBeforeAction();
+        if (GameTurnSystem.GTS.state == TurnState.PlayerTurn)
+            GameTurnSystem.GTS.FinishTurn();
     } 
 
     public void updateStateRec(Tile tile){

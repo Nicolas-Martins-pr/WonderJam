@@ -155,7 +155,8 @@ public class CharacterControl : MonoBehaviourPunCallbacks
             newpost += new Vector3(0, 0, 1);
         }
         playerpos.transform.position = newpost ;
-
+        if (GameTurnSystem.GTS.state == TurnState.PlayerTurn)
+            GameTurnSystem.GTS.FinishTurn();
         //StartMove("north");
     }
 

@@ -55,6 +55,8 @@ public class Portal : MonoBehaviour
         SetFreePortalMovement();
         Controller.ctrl.DesactiveAllTileSelectorIndicator();
         Controller.ctrl.ResetBeforeAction();
+        if (GameTurnSystem.GTS && GameTurnSystem.GTS.state == TurnState.PlayerTurn)
+            GameTurnSystem.GTS.FinishTurn();
     }
     #endregion
 
