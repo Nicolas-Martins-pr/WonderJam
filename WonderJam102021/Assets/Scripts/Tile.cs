@@ -316,6 +316,15 @@ public class Tile : MonoBehaviour
         return walkableTiles;
     }
 
+    public void cardCreateObstacle(){
+        CreateObstacle();
+    }
+
+    public void cardRemoveObstacle()
+    {
+        CreateObstacle(1);
+    }
+
     public void CreateObstacle(int value = 0)
     {
         if (value == 0) // Set an obstacle
@@ -338,7 +347,7 @@ public class Tile : MonoBehaviour
     {
         foreach (Tile tile in boardtiles)
         {
-            if (tile.isWalkable()){
+            if (tile.isWalkable() && (tile.getPositionH() != this.getPositionH() && tile.getPositionV() != this.getPositionV())){
                 this.m_AllWakable.Add(tile);
                 this.m_activeSetObstacle = true;
             }
