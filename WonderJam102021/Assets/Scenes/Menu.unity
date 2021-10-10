@@ -388,12 +388,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6be8e439e38f2e140995d8d2a9c39319, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  multiplayerScene: 1
+  multiplayerScene: 2
   isGameLoaded: 0
   currentScene: 0
   playersInRoom: 0
   playerId: 0
-  maxPlayer: 1
+  maxPlayer: 2
 --- !u!4 &799824475
 Transform:
   m_ObjectHideFlags: 0
