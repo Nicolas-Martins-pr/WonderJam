@@ -267,7 +267,31 @@ public class GameTurnSystem : MonoBehaviour
             state = TurnState.PlayerTurn;
             phase.text = "Phase: " + state;
             Debug.Log(phase.text);
-            Controller.ctrl.useJoker();
+            if (typeCardSelected == 0)
+            {
+                Controller.ctrl.DisplayMove();
+            }
+            if (typeCardSelected == 2)
+            {
+                Controller.ctrl.selectPortalToMove();
+            }
+            if (typeCardSelected == 3)
+            {
+                
+            }
+            if (typeCardSelected == 4)
+            {
+                Controller.ctrl.DisplayMove2();
+            }
+            if (typeCardSelected == 5)
+            {
+                Controller.ctrl.earthquake();
+            }
+            if (typeCardSelected == 6)
+            {
+                Controller.ctrl.useJoker();
+            }
+            
             try
             {
                 StopCoroutine(coInst);

@@ -70,17 +70,15 @@ public class Deck : MonoBehaviour
     {
         int i = 0;
         int r = Random.Range(0, 50);
-        if(r < 24)
+        if(r < 20)
             i = 0;
         else if (r < 32)
             i = 2;
-        else if (r < 32)
-            i = 3;
         else if (r < 40)
             i = 4;
-        else if (r < 44)
+        else if (r < 46)
             i = 5;
-        else if (r < 48)
+        else 
             i = 6;
         return i;
     }
