@@ -14,6 +14,9 @@ public class Controller : MonoBehaviour {
     public int m_nbRuins = 10;
     public int m_nbPortals = 2;
     public GameObject m_board;
+
+    public Portal m_portal1;
+    public Portal m_portal2;
     
     public Tile[] gameBoard;
 
@@ -34,6 +37,8 @@ public class Controller : MonoBehaviour {
         SetAllBoardTiles();
         GenerateObstacleZone();
         SetAllNextTiles();
+
+        earthquake();
     }
 
     private void Update() 
@@ -126,12 +131,14 @@ public class Controller : MonoBehaviour {
         }
 
     }
-     void GenerateObstacleZone()
+     void GenerateObstacleZone() // Set all tree + mountains + ruins and the two portals
     {
-        int nbtree = this.m_nbTrees, nbmountain = this.m_nbMountain, nbruin = this.m_nbRuins;
+        int nbtree = this.m_nbTrees, nbmountain = this.m_nbMountain, nbruin = this.m_nbRuins, nbportal = this.m_nbPortals;
         int rand3 = (int)(Random.value * 3);
 
         int row = (int) (Random.value * m_side), column = (int) (Random.value * m_side); 
+
+        Tile tile;
         while (nbtree != 0 || nbruin != 0 || nbmountain != 0)
         {
             row = (int) (Random.value * m_side);
@@ -141,7 +148,7 @@ public class Controller : MonoBehaviour {
             if ((column == m_side/2 && row == 0) || (column == 0 && row == m_side -1) || (column == m_side -1 && row == m_side -1) ){}
             else
             {
-                Tile tile = (m_gameBoardI[row*m_side + column]);
+                tile = (m_gameBoardI[row*m_side + column]);
                 if (tile.isWalkable())
                 {
                     if (rand3 == 0)
@@ -187,6 +194,64 @@ public class Controller : MonoBehaviour {
             }
         }
 
+        // set portal while
+
+        while (nbportal != 0)
+        {
+            row = (int) (Random.value * m_side);
+            column = (int) (Random.value * m_side); 
+
+            if ((column == m_side/2 && row == 0) || (column == 0 && row == m_side -1) || (column == m_side -1 && row == m_side -1) ){}
+            else
+            {
+                tile = (m_gameBoardI[row*m_side + column]);
+                if (tile.isWalkable())
+                {
+                    if (this.m_portal1.m_currentTile == null)
+                    {
+                        this.m_portal1.SetCurrentTile(tile);
+                        nbportal -=1;
+                    }
+                    else
+                    {
+                        if (!tile.hasPortal())
+                        {
+                            this.m_portal2.SetCurrentTile(tile);
+                            nbportal -=1;
+                        }
+
+                    }
+                }
+
+            }
+        }
+
+    }
+
+    public void earthquake() 
+     { 
+         foreach (var ti in m_gameBoardI) 
+         { 
+             ti.setMountain(false); 
+             ti.setRuin(false); 
+             ti.setTree(false); 
+              
+         } 
+         GenerateObstacleZone(); 
+        foreach (Tile tile in m_gameBoardI)
+        {
+            tile.getState();
+            updateStateRec(tile);
+        }
+    } 
+
+    public void updateStateRec(Tile tile){
+        PV.RPC("updateState", RpcTarget.AllBuffered, tile);
+    }
+
+    [PunRPC]
+    public void updateState(Tile tile){
+        tile.setState(tile.state);
     }
 
     void SetAllNextTiles()
@@ -194,6 +259,7 @@ public class Controller : MonoBehaviour {
         foreach (Tile tile in m_gameBoardI)
         {
             tile.SetAdjacentTiles(m_gameBoardI);
+            tile.SetAdjacentTiles(m_gameBoardI, 1);
         }
     }
 

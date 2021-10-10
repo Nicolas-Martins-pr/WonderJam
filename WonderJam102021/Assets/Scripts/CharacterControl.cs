@@ -32,7 +32,7 @@ public class CharacterControl : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     #region Accessors
@@ -60,6 +60,20 @@ public class CharacterControl : MonoBehaviourPunCallbacks
     }
     #endregion
     
+    public bool checkPortal()
+    {
+        return this.getTile().hasPortal();
+    }
+
+    public void UsePortal() // need checkPortal true before
+    {
+        if( checkPortal()){
+            this.setTile(this.getTile().GetPortal().getExitPortal().GetCurrentTile());
+        }
+    }
+
+
+
     public void setClicked(bool value)
     {
         this.m_clicked = value;

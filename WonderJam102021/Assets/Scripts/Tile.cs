@@ -9,10 +9,14 @@ public class Tile : MonoBehaviour
 
     public int m_positionV;
     public int m_positionH;
+
+    public int state= 0;
     public bool m_mountain;
     public bool m_ruin;
     public bool m_water;
     public bool m_tree;
+
+    public bool m_portal;
     public bool m_player =false;
     public bool m_endPlayer1;
     public bool m_endPlayer2;
@@ -21,12 +25,15 @@ public class Tile : MonoBehaviour
     public List<GameObject> trees;
     public GameObject ruin;
     public GameObject portal;
+    public Portal portalActif;
 
     public GameObject gateHeaven;
     public GameObject gateHell;
 
     public bool m_active = false;
+    public bool m_activePortal = false; // singleton for move one portal position
     public List<Tile> m_AdjacentTiles = new List<Tile>();  //Group of different Tile free to move 
+    public List<Tile> m_AdjacentTiles2 = new List<Tile>();  //Group of different Tile free to move 
 
     public GameObject m_selectorIndicator;
 
@@ -58,6 +65,11 @@ public class Tile : MonoBehaviour
         int[] position = new int[2] {this.getPositionH(),this.getPositionV()};
         return position;
     }
+
+    public Portal GetPortal()
+    {
+        return this.portal.GetComponent<Portal>();
+    }
     public bool hasMountain() 
     {
         return this.m_mountain;
@@ -83,6 +95,11 @@ public class Tile : MonoBehaviour
         return this.m_player;
     }
 
+    public bool hasPortal()
+    {
+        return this.m_portal;
+    }
+
     public bool isWalkable()
     {
         return !this.hasMountain() && !this.hasWater() && !this.hasRuin() && !this.hasTree();
@@ -95,6 +112,51 @@ public class Tile : MonoBehaviour
     public bool isActive()
     {
         return this.m_active;
+    }
+
+    public void getState(){
+        if(this.isWalkable())
+        {
+            this.state = 0;
+        }
+        else if (this.hasMountain())
+        {
+            this.state = 1;
+        }
+        else if (this.hasTree())
+        {
+            this.state = 2;
+        }
+        else if (this.hasRuin())
+        {
+            this.state = 3;
+        }
+    }
+
+    public void setState(int state){
+        clearState();
+        if(state == 0){
+            
+        }
+        else if (state ==1)
+        {
+            this.setMountain(true);
+        }
+        else if (state ==2)
+        {
+            this.setTree(true);   
+        }
+        else if (state ==3)
+        {
+            this.setRuin(true);
+        }
+
+
+    }
+    public void clearState(){
+        this.setMountain(false);
+        this.setRuin(false);
+        this.setTree(false);
     }
     #endregion
 
@@ -111,13 +173,13 @@ public class Tile : MonoBehaviour
     public void setMountain(bool value)
     {
         this.m_mountain = value;
-        this.mountain.SetActive(true);
+        this.mountain.SetActive(value);
         
     }
     public void setRuin(bool value)
     {
         this.m_ruin = value;
-        this.ruin.SetActive(true);
+        this.ruin.SetActive(value);
     }
     public void setPlayer(bool value)
     {
@@ -133,6 +195,27 @@ public class Tile : MonoBehaviour
         int wTree = (int) (UnityEngine.Random.value * 2);
         Debug.Log(wTree);
         this.trees[wTree].SetActive(value) ;
+        if (value == false)
+        {
+            this.trees[0].SetActive(false);
+            this.trees[1].SetActive(false);
+        }
+    }
+
+    public void setPortal(bool value)
+    {
+        this.portal.SetActive(value);
+        this.m_portal = value;
+    }
+
+    public void setActivePortal(bool value)
+    {
+        this.m_activePortal = value;
+    }
+
+    public void setPortalActif(Portal portal) // 
+    {
+        this.portalActif = portal;
     }
 
     public void setGateHeaven(bool value)
@@ -152,15 +235,37 @@ public class Tile : MonoBehaviour
 
     #region Utils
 
-    public void SetAdjacentTiles(List<Tile> boardtiles) // optimisable
+    public void SetAdjacentTiles(List<Tile> boardtiles, int nbMove = 0) // optimisable
     {
-        foreach (Tile tile in boardtiles)
+        if (nbMove == 0)
+        {
+            foreach (Tile tile in boardtiles)
         {
             if (tile.getPositionH() == this.getPositionH() -1 && tile.getPositionV() == this.getPositionV() || tile.getPositionH() == this.getPositionH() +1 && tile.getPositionV() == this.getPositionV() || tile.getPositionV() == this.getPositionV() -1 && tile.getPositionH() == this.getPositionH()||tile.getPositionV() == this.getPositionV() +1 && tile.getPositionH() == this.getPositionH())
             {
                 this.m_AdjacentTiles.Add(tile);
             }
         }
+        }
+        else
+        {
+            foreach (Tile tile in boardtiles)
+        {
+            if (tile.getPositionH() == this.getPositionH() -1 && tile.getPositionV() == this.getPositionV() || tile.getPositionH() == this.getPositionH() +1 && tile.getPositionV() == this.m_currentTile.getPositionV() || tile.getPositionV() == this.getPositionV() -1 && tile.getPositionH() == this.getPositionH() || tile.getPositionV() == this.getPositionV() +1 && tile.getPositionH() == this.getPositionH())
+            {
+                this.m_AdjacentTiles2.Add(tile);
+            }
+            else if (tile.getPositionH() == this.getPositionH() -2 && tile.getPositionV() == this.getPositionV() || tile.getPositionH() == this.getPositionH() +2 && tile.getPositionV() == this.m_currentTile.getPositionV() || tile.getPositionV() == this.getPositionV() -2 && tile.getPositionH() == this.getPositionH() || tile.getPositionV() == this.getPositionV() +2 && tile.getPositionH() == this.getPositionH())
+            {
+                this.m_AdjacentTiles2.Add(tile);
+            }
+            else if (tile.getPositionH() == this.getPositionH() -1 && tile.getPositionV() == this.getPositionV() -1 || tile.getPositionH() == this.getPositionH() +1 && tile.getPositionV() == this.m_currentTile.getPositionV() -1 || tile.getPositionV() == this.getPositionV() -1 && tile.getPositionH() == this.getPositionH() +1 || tile.getPositionV() == this.getPositionV() +1 && tile.getPositionH() == this.getPositionH()+1)
+            {
+                this.m_AdjacentTiles2.Add(tile);
+            }
+        }
+        }
+        
         setSelectorIndicator(false);
     }
     public List<Tile> getMovements()
@@ -168,6 +273,20 @@ public class Tile : MonoBehaviour
         List<Tile> walkableTiles = new List<Tile>();
         List<Tile> tiles = this.GetAdjacentTiles();
         foreach (Tile tile in tiles)
+        {
+            if (tile.isWalkable())
+            {
+                walkableTiles.Add(tile);
+                tile.setSelectorIndicator(true);
+            }
+            
+        }
+        return walkableTiles;
+    }
+    public List<Tile> getMovements2()
+    {
+        List<Tile> walkableTiles = new List<Tile>();
+        foreach (Tile tile in this.m_AdjacentTiles2)
         {
             if (tile.isWalkable())
             {
@@ -191,7 +310,11 @@ public class Tile : MonoBehaviour
 
     void OnMouseUp() 
     {
-        if(this.isActive())
+        if (this.m_activePortal)
+        {
+            this.portalActif.SetCurrentTile(this);
+        }
+        else if(this.isActive())
         {
             this.setPlayer(true);
             Controller.ctrl.MovePlayrRec(this);
@@ -214,8 +337,16 @@ public class Tile : MonoBehaviour
             Array.Reverse(vb);
         int v = BitConverter.ToInt32(vb, 0);
 
-        Debug.Log(h + " " + v);
+        //Ajout Lucas
+        byte[] sb = new byte[4];
+        Array.Copy(data, 8,vb, 0, vb.Length);
+        if (BitConverter.IsLittleEndian)
+            Array.Reverse(vb);
+        int s = BitConverter.ToInt32(sb, 0);
+        //
+        Debug.Log(h + " " + v + " " + s);
         Tile tile = Controller.ctrl.GetTile(h,v);
+        tile.setState(s);
         return tile;
     }
 
@@ -224,7 +355,9 @@ public class Tile : MonoBehaviour
         Debug.Log("serialize");
         var tile = (Tile)obj;
         Debug.Log(tile.getPositionH()+ " "+ tile.getPositionV());
-
+        // ajout lucas
+        tile.getState();
+        //
         byte[] h = BitConverter.GetBytes(tile.getPositionH());
         if (BitConverter.IsLittleEndian)
             Array.Reverse(h);
@@ -232,10 +365,15 @@ public class Tile : MonoBehaviour
         byte[] v = BitConverter.GetBytes(tile.getPositionV());
         if (BitConverter.IsLittleEndian)
             Array.Reverse(v);
+        //Ajout Lucas
+        byte[] s = BitConverter.GetBytes(tile.state);
+        if (BitConverter.IsLittleEndian)
+            Array.Reverse(s);
+        //
+        // Byte[] data = new byte[2*4];
+        Byte[] data = new byte[3*4];
 
-        Byte[] data = new byte[2*4];
-
-        return JoinBytes(h,v);
+        return JoinBytes(h,v,s);
     }
 
     private static byte[] JoinBytes(params byte[][] arrays)

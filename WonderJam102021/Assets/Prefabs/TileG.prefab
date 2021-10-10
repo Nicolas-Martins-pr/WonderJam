@@ -203,6 +203,7 @@ MonoBehaviour:
   m_ruin: 0
   m_water: 0
   m_tree: 0
+  m_portal: 0
   m_player: 0
   m_endPlayer1: 0
   m_endPlayer2: 0
@@ -215,7 +216,7 @@ MonoBehaviour:
   gateHeaven: {fileID: 4672054610599825576}
   gateHell: {fileID: 1402420985603805569}
   m_active: 0
-  m_nextTiles: []
+  m_AdjacentTiles: []
   m_selectorIndicator: {fileID: 9021222946070594991}
 --- !u!65 &7379321570820768636
 BoxCollider:
@@ -242,6 +243,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a068a4937e8d1434ab212b022c29929a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_currentTile: {fileID: 0}
+  m_freePortalMovement: []
+  m_board: {fileID: 0}
+  m_ExitPortal: {fileID: 0}
 --- !u!1 &9021222946070594991
 GameObject:
   m_ObjectHideFlags: 0
