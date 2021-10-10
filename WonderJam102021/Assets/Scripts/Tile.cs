@@ -193,7 +193,6 @@ public class Tile : MonoBehaviour
     {
         this.m_tree = value;
         int wTree = (int) (UnityEngine.Random.value * 2);
-        Debug.Log(wTree);
         this.trees[wTree].SetActive(value) ;
         if (value == false)
         {
@@ -320,7 +319,9 @@ public class Tile : MonoBehaviour
             Controller.ctrl.MovePlayrRec(this);
         }
     }
+    #endregion
 
+    #region serialize
     public static object Deserialize(byte[] data)
     {
         Debug.Log("deserialize");

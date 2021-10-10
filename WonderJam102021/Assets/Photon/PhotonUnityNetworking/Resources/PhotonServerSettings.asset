@@ -45,6 +45,15 @@ MonoBehaviour:
   - StartMove
   - MovePlayer
   - movePlayer
+  - removeCard
+  - selectCard
+  - cancelCard
+  - RemoveCardFromDeck
+  - drawChance
+  - DrawChance
+  - setResult
+  - PlayCharacter
+  - PlayCard
   - updateState
   DisableAutoOpenWizard: 1
   ShowSettings: 1
