@@ -24,6 +24,7 @@ public class Controller : MonoBehaviour {
     public CharacterControl m_character;
     public GameObject prefabTileG;
     public GameObject prefabTileW;
+    private Tile tile;
 
     private PhotonView PV;
 
@@ -43,6 +44,7 @@ public class Controller : MonoBehaviour {
 
     private void Update() 
     {
+       
 
     }
 
@@ -193,6 +195,7 @@ public class Controller : MonoBehaviour {
                 }
             }
         }
+        
 
         // set portal while
 

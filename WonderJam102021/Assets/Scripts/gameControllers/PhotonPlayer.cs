@@ -11,8 +11,7 @@ public class PhotonPlayer : MonoBehaviour
     public GameObject myAvatar;
     public Hashtable myCards;
     public string camp;
-
-
+    private SmoothCam smooth;
     // Start is called before the first frame update
     void Start()
     {
@@ -129,6 +128,6 @@ public class PhotonPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+     
     }
 }
