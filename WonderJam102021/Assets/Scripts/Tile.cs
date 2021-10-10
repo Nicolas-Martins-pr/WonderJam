@@ -240,7 +240,10 @@ public class Tile : MonoBehaviour
         {
             foreach (Tile tile in boardtiles)
         {
-            if (tile.getPositionH() == this.getPositionH() -1 && tile.getPositionV() == this.getPositionV() || tile.getPositionH() == this.getPositionH() +1 && tile.getPositionV() == this.getPositionV() || tile.getPositionV() == this.getPositionV() -1 && tile.getPositionH() == this.getPositionH()||tile.getPositionV() == this.getPositionV() +1 && tile.getPositionH() == this.getPositionH())
+            if (tile.getPositionH() == this.getPositionH() -1 && tile.getPositionV() == this.getPositionV() ||
+                    tile.getPositionH() == this.getPositionH() +1 && tile.getPositionV() == this.getPositionV() ||
+                    tile.getPositionV() == this.getPositionV() -1 && tile.getPositionH() == this.getPositionH()||
+                    tile.getPositionV() == this.getPositionV() +1 && tile.getPositionH() == this.getPositionH())
             {
                 this.m_AdjacentTiles.Add(tile);
             }
@@ -250,15 +253,25 @@ public class Tile : MonoBehaviour
         {
             foreach (Tile tile in boardtiles)
         {
-            if (tile.getPositionH() == this.getPositionH() -1 && tile.getPositionV() == this.getPositionV() || tile.getPositionH() == this.getPositionH() +1 && tile.getPositionV() == this.m_currentTile.getPositionV() || tile.getPositionV() == this.getPositionV() -1 && tile.getPositionH() == this.getPositionH() || tile.getPositionV() == this.getPositionV() +1 && tile.getPositionH() == this.getPositionH())
+            if (tile.getPositionH() == this.getPositionH() -1 &&
+                    tile.getPositionV() == this.getPositionV() ||
+                    tile.getPositionH() == this.getPositionH() +1 && tile.getPositionV() == this.getPositionV() ||
+                    tile.getPositionV() == this.getPositionV() -1 && tile.getPositionH() == this.getPositionH() ||
+                    tile.getPositionV() == this.getPositionV() +1 && tile.getPositionH() == this.getPositionH())
             {
                 this.m_AdjacentTiles2.Add(tile);
             }
-            else if (tile.getPositionH() == this.getPositionH() -2 && tile.getPositionV() == this.getPositionV() || tile.getPositionH() == this.getPositionH() +2 && tile.getPositionV() == this.m_currentTile.getPositionV() || tile.getPositionV() == this.getPositionV() -2 && tile.getPositionH() == this.getPositionH() || tile.getPositionV() == this.getPositionV() +2 && tile.getPositionH() == this.getPositionH())
+            else if (tile.getPositionH() == this.getPositionH() -2 && tile.getPositionV() == this.getPositionV() ||
+                    tile.getPositionH() == this.getPositionH() +2 && tile.getPositionV() == this.getPositionV() ||
+                    tile.getPositionV() == this.getPositionV() -2 && tile.getPositionH() == this.getPositionH() ||
+                    tile.getPositionV() == this.getPositionV() +2 && tile.getPositionH() == this.getPositionH())
             {
                 this.m_AdjacentTiles2.Add(tile);
             }
-            else if (tile.getPositionH() == this.getPositionH() -1 && tile.getPositionV() == this.getPositionV() -1 || tile.getPositionH() == this.getPositionH() +1 && tile.getPositionV() == this.m_currentTile.getPositionV() -1 || tile.getPositionV() == this.getPositionV() -1 && tile.getPositionH() == this.getPositionH() +1 || tile.getPositionV() == this.getPositionV() +1 && tile.getPositionH() == this.getPositionH()+1)
+            else if (tile.getPositionH() == this.getPositionH() -1 && tile.getPositionV() == this.getPositionV() -1 ||
+                    tile.getPositionH() == this.getPositionH() +1 && tile.getPositionV() == this.getPositionV() -1 ||
+                    tile.getPositionV() == this.getPositionV() -1 && tile.getPositionH() == this.getPositionH() +1 ||
+                    tile.getPositionV() == this.getPositionV() +1 && tile.getPositionH() == this.getPositionH()+1)
             {
                 this.m_AdjacentTiles2.Add(tile);
             }

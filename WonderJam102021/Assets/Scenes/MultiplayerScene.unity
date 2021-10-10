@@ -1290,6 +1290,8 @@ MonoBehaviour:
   m_nbRuins: 5
   m_nbPortals: 2
   m_board: {fileID: 415956910}
+  m_portal1: {fileID: 535522775}
+  m_portal2: {fileID: 497671698}
   gameBoard: []
   m_gameBoardI: []
   m_character: {fileID: 1259378108}
@@ -1476,6 +1478,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 479821194}
   m_CullTransparentMesh: 1
+--- !u!1 &497671696
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 497671697}
+  - component: {fileID: 497671698}
+  m_Layer: 0
+  m_Name: portal (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &497671697
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 497671696}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 637523496}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &497671698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 497671696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a068a4937e8d1434ab212b022c29929a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_currentTile: {fileID: 0}
+  m_freePortalMovement: []
+  m_board: {fileID: 415956910}
+  m_ExitPortal: {fileID: 535522775}
 --- !u!1 &509550839
 GameObject:
   m_ObjectHideFlags: 0
@@ -1630,6 +1679,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 534118031}
   m_CullTransparentMesh: 1
+--- !u!1 &535522774
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 535522776}
+  - component: {fileID: 535522775}
+  m_Layer: 0
+  m_Name: portal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &535522775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535522774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a068a4937e8d1434ab212b022c29929a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_currentTile: {fileID: 0}
+  m_freePortalMovement: []
+  m_board: {fileID: 415956910}
+  m_ExitPortal: {fileID: 497671698}
+--- !u!4 &535522776
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535522774}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 637523496}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &537859601
 GameObject:
   m_ObjectHideFlags: 0
@@ -1782,6 +1878,8 @@ Transform:
   - {fileID: 856406661}
   - {fileID: 109604876}
   - {fileID: 890005920}
+  - {fileID: 535522776}
+  - {fileID: 497671697}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

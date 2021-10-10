@@ -228,19 +228,21 @@ public class GameTurnSystem : MonoBehaviour
             Debug.Log("no timer to stop");
         }
 
-        //discard card
-        if (KeyCardSelected != -1)
-            player.removeCard(KeyCardSelected);
+        ComputeResult();
+        
         //Hide placeholders
         GameSetup.GS.spawnPoints[0].GetChild(0).GetChild(0).gameObject.SetActive(false);
         GameSetup.GS.spawnPoints[0].GetChild(1).GetChild(0).gameObject.SetActive(false);
         //destroy cardSelected
         Destroy(GameSetup.GS.spawnPoints[0].GetChild(0).GetChild(1).gameObject);
         Destroy(GameSetup.GS.spawnPoints[0].GetChild(1).GetChild(1).gameObject);
+        setWindowResult();
 
+        //discard card
+        if (KeyCardSelected != -1)
+            player.removeCard(KeyCardSelected);
         setOponnentWait(false);
 
-        ComputeResult();
         
         if (false) //(asWin)
         {
@@ -260,7 +262,7 @@ public class GameTurnSystem : MonoBehaviour
         {
             SetupTurn();
         }
-        setWindowResult();
+        
         
         
     }
