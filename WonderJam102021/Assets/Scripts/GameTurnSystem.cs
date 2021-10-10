@@ -10,7 +10,7 @@ public enum TurnState {Start, PlayerTurn, Card,End}
 public class GameTurnSystem : MonoBehaviour
 {
     public TurnState state;
-    public GameObject player;
+    public GameObject playedCard;
     public GameObject discarded;
     public Text phase;
     public Text countdownText;

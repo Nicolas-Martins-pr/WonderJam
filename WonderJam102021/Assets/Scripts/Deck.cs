@@ -83,7 +83,7 @@ public class Deck : MonoBehaviour
         
     }
 
-    public void toDiscard()
+    public void toDiscard(GameObject playedCard)
     {
         
     }
