@@ -10,7 +10,7 @@ public class SmoothCam : MonoBehaviour
     public GameObject spawnPoint;
     int mDelta = 10;
     public float timeRemaining = 5;
-   
+    private bool first = true;
    
     void Start()
     {
@@ -34,7 +34,7 @@ public class SmoothCam : MonoBehaviour
 
                     transform.position = Vector3.SmoothDamp(transform.position,
                         GameSetup.GS.spawnPoints[0].transform.position, ref velocity, 2);
-                   
+                    first = false;
                 }
 
                 if (Input.mousePosition.y <= 0 + mDelta)
@@ -47,16 +47,16 @@ public class SmoothCam : MonoBehaviour
             }
 
             IEnumerator test()
-        {
-            if (transform.position != spawnPoint.transform.position)
             {
-                transform.position =
-                    Vector3.SmoothDamp(transform.position, spawnPoint.transform.position, ref velocity, 2);
-               
+                if (transform.position != spawnPoint.transform.position && first == true)
+                {
+                    transform.position =
+                        Vector3.SmoothDamp(transform.position, spawnPoint.transform.position, ref velocity, 2);
 
-            }
 
-            yield break;
+                }
+
+                yield break;
         }
     }
 }
