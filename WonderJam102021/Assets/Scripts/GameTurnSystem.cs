@@ -87,7 +87,7 @@ public class GameTurnSystem : MonoBehaviour
             Debug.Log("no timer to stop");
         }
         coInst = StartCoroutine(Timer(120));
-        Deck.deck.GiveCard(PhotonRoom.room.playerId);
+        Deck.deck.GiveCard();
     }
 
     void waitOponnent()

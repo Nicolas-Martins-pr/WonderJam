@@ -92,7 +92,8 @@ public class PhotonPlayer : MonoBehaviour
             phs.gameObject.SetActive(false);
 
             //get firts cards
-            Deck.deck.GiveCard(PhotonRoom.room.playerId);
+            Deck.deck.fillCards();
+            Deck.deck.GiveCard();
         }
         
         

@@ -25,7 +25,7 @@ public class Deck : MonoBehaviour
         PV = GetComponent<PhotonView>();
     }
 
-    private void fillCards()
+    public void fillCards()
     {
         foreach (var name in Enum.GetNames(typeof(cardName)))
         {
@@ -66,11 +66,27 @@ public class Deck : MonoBehaviour
         }
     }
     
-    public void GiveCard(int playerId)
+    private int getRandomCard()
     {
-        if (myGameObjects.Count == 0)
-            DiscardToDeck();
-
+        int i = 0;
+        int r = Random.Range(0, 50);
+        Debug.Log(r);
+        if(r < 24)
+            i = 0;
+        else if (r < 32)
+            i = 2;
+        else if (r < 32)
+            i = 3;
+        else if (r < 40)
+            i = 4;
+        else if (r < 44)
+            i = 5;
+        else if (r < 48)
+            i = 6;
+        return i;
+    }
+    public void GiveCard()
+    {
         int limit;
         if (GameTurnSystem.GTS.player.myCards.Count <= 0)
         {
@@ -86,8 +102,9 @@ public class Deck : MonoBehaviour
         }
         for (int j = 0; j < limit; j++)
         {
-            int r= Random.Range(0,this.transform.childCount);
-            PV.RPC("RemoveCardFromDeck", RpcTarget.AllBuffered, r, playerId);
+            int r = getRandomCard();
+            GameObject card = Instantiate(myGameObjects[r], new Vector3(0, 0, 0), quaternion.identity);
+            GameTurnSystem.GTS.player.addCard(card);
         }
     }
 
