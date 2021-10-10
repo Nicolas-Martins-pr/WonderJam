@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028359, g: 0.22571385, b: 0.30692258, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2387,7 +2387,7 @@ Transform:
   - {fileID: 422934984}
   - {fileID: 475693445}
   - {fileID: 1514304477}
-  - {fileID: 1930577414}
+  - {fileID: 7918672782095173108}
   - {fileID: 425140346}
   - {fileID: 1524698147}
   - {fileID: 531409078}
@@ -2595,7 +2595,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3456889554427017259, guid: e76b1c253d171db46a6112f341178315, type: 3}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1361881103}
+  m_GameObject: {fileID: 584877349}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -2618,18 +2618,11 @@ MonoBehaviour:
   m_positionV: 0
   m_positionH: 0
   m_mountain: 0
-  m_ruin: 0
   m_water: 0
-  m_tree: 0
+  m_trap: 0
   m_player: 0
   m_endPlayer1: 0
   m_endPlayer2: 0
-  mountain: {fileID: 0}
-  trees: []
-  ruin: {fileID: 0}
-  portal: {fileID: 0}
-  gateHeaven: {fileID: 0}
-  gateHell: {fileID: 0}
   m_active: 0
   m_nextTiles: []
   m_selectorIndicator: {fileID: 0}
@@ -4979,6 +4972,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e76b1c253d171db46a6112f341178315, type: 3}
+--- !u!4 &7918672782095173108 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3456889554427017259, guid: e76b1c253d171db46a6112f341178315, type: 3}
+  m_PrefabInstance: {fileID: 7918672782095173107}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7952955589419257263
 PrefabInstance:
   m_ObjectHideFlags: 0
