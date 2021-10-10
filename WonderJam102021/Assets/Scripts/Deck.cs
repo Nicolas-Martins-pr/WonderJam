@@ -73,10 +73,8 @@ public class Deck : MonoBehaviour
         if(r < 20)
             i = 0;
         else if (r < 32)
-            i = 2;
-        else if (r < 40)
             i = 4;
-        else if (r < 46)
+        else if (r < 42)
             i = 5;
         else 
             i = 6;
