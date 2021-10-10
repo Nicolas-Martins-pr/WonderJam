@@ -177,8 +177,29 @@ public class CharacterControl : MonoBehaviourPunCallbacks
             newpost += new Vector3(0, 0, 1);
         }
         playerpos.transform.position = newpost ;
-        if (GameTurnSystem.GTS.state == TurnState.PlayerTurn)
+        if (getTile().m_endPlayer1)
+        {
+            if (PhotonRoom.room.playerId == 1)
+            {
+                haswin = true;
+                PV.RPC("SetHasWin", RpcTarget.OthersBuffered, false);
+                PV.RPC("EndGame", RpcTarget.AllBuffered);
+            }
+        }
+        else if (getTile().m_endPlayer2)
+        {
+            if (PhotonRoom.room.playerId == 2)
+            {
+                haswin = true;
+                PV.RPC("SetHasWin", RpcTarget.OthersBuffered, false);
+                PV.RPC("EndGame", RpcTarget.AllBuffered);
+            }
+        }
+        else if (GameTurnSystem.GTS.state == TurnState.PlayerTurn)
+        {
             GameTurnSystem.GTS.FinishTurn();
+        }
+            
         //StartMove("north");
     }
 

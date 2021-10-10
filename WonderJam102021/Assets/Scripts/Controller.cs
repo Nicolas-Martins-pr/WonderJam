@@ -326,7 +326,6 @@ public class Controller : MonoBehaviour {
     public Tile SetTileState(int h, int v, int s)
     {
         Tile tile = GetTile(h, v);
-        Debug.Log(h + " ; " + v + " = " + s);
         tile.clearState();
         if (s == 0)
         {

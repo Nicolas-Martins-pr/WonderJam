@@ -70,7 +70,6 @@ public class Deck : MonoBehaviour
     {
         int i = 0;
         int r = Random.Range(0, 50);
-        Debug.Log(r);
         if(r < 24)
             i = 0;
         else if (r < 32)
