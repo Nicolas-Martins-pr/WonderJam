@@ -36,10 +36,8 @@ public class Controller : MonoBehaviour {
         PV = GetComponent<PhotonView>();
         ctrl = this;
         SetAllBoardTiles();
-        GenerateObstacleZone();
         SetAllNextTiles();
-
-        earthquake();
+        GenerateObstacleZone();
     }
 
     private void Update() 
@@ -133,7 +131,41 @@ public class Controller : MonoBehaviour {
         }
 
     }
-     void GenerateObstacleZone() // Set all tree + mountains + ruins and the two portals
+
+    public void DisplayMove()
+    {
+        m_character.getTile().getMovements();
+    }
+
+    public void DisplayMove2()
+    {
+        m_character.getTile().getMovements2();
+    }
+
+    public void selectPortalToMove()
+    {
+        m_portal1.m_currentTile.selectPortal = true;
+        m_portal1.m_currentTile.setActive(true);
+
+        m_portal1.m_currentTile.selectPortal = true;
+        m_portal1.m_currentTile.setActive(true);
+    }
+
+    public void useJoker()
+    {
+        GameTurnSystem.GTS.jokerWindow.SetActive(true);
+    }
+
+
+    public void desactivatePortalSelection()
+    {
+        m_portal1.m_currentTile.selectPortal = false;
+        m_portal1.m_currentTile.setActive(false);
+
+        m_portal1.m_currentTile.selectPortal = false;
+        m_portal1.m_currentTile.setActive(false);
+    }
+    public void GenerateObstacleZone() // Set all tree + mountains + ruins and the two portals
     {
         int nbtree = this.m_nbTrees, nbmountain = this.m_nbMountain, nbruin = this.m_nbRuins, nbportal = this.m_nbPortals;
         int rand3 = (int)(Random.value * 3);
@@ -246,6 +278,7 @@ public class Controller : MonoBehaviour {
             tile.getState();
             updateStateRec(tile);
         }
+        ResetBeforeAction();
     } 
 
     public void updateStateRec(Tile tile){
@@ -310,7 +343,7 @@ public class Controller : MonoBehaviour {
     }
 
    
-    void ResetBeforeAction()
+    public void ResetBeforeAction()
     {
         DesactiveAllTileSelectorIndicator();
         displayCalledOnce = false;

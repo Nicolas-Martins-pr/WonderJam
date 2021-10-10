@@ -72,8 +72,6 @@ public class CharacterControl : MonoBehaviourPunCallbacks
         }
     }
 
-
-
     public void setClicked(bool value)
     {
         this.m_clicked = value;
@@ -81,7 +79,7 @@ public class CharacterControl : MonoBehaviourPunCallbacks
 
     void OnMouseUp() 
     {
-        if (!this.getPlayerClicked())
+        /*if (!this.getPlayerClicked())
         {
             this.getTile().getMovements();
             this.setClicked(true);
@@ -90,7 +88,7 @@ public class CharacterControl : MonoBehaviourPunCallbacks
         {
             Controller.ctrl.DesactiveAllTileSelectorIndicator();
             this.setClicked(false);
-        }
+        }*/
     }
 
     [PunRPC]
@@ -157,6 +155,7 @@ public class CharacterControl : MonoBehaviourPunCallbacks
             newpost += new Vector3(0, 0, 1);
         }
         playerpos.transform.position = newpost ;
+
         //StartMove("north");
     }
 

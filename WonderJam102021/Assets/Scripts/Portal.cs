@@ -54,6 +54,7 @@ public class Portal : MonoBehaviour
         tile.setPortal(true);                       // new portal appear
         SetFreePortalMovement();
         Controller.ctrl.DesactiveAllTileSelectorIndicator();
+        Controller.ctrl.ResetBeforeAction();
     }
     #endregion
 
@@ -103,6 +104,7 @@ public class Portal : MonoBehaviour
     {
         ClearPortalMovement();
         SetMovePortal();
+        Controller.ctrl.ResetBeforeAction();
     }
 
 

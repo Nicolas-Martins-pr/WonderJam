@@ -33,17 +33,19 @@ public class GameTurnSystem : MonoBehaviour
     public bool asWin;
     public bool oponnentAsWin;
     public GameObject windowResult;
+    public GameObject jokerWindow;
 
     void Start()
     {
         PV = GetComponent<PhotonView>();
         GTS = this;
+        //TODO sera à enlever quand le earthquake ce fera dans le protonplayer
         SetupTurn();
         
     }
 
     // Update is called once per frame
-
+    [PunRPC]
     void SetupTurn()
     {
         typeCardSelected = -1;
@@ -54,6 +56,11 @@ public class GameTurnSystem : MonoBehaviour
         Debug.Log(phase.text);
         coInst=StartCoroutine(Timer(5));
         //il faut implémenter l'animator pour terminer cette phase du jeu
+    }
+
+    public void FinishTurn()
+    {
+        PV.RPC("SetupTurn", RpcTarget.AllBuffered);
     }
 
     [PunRPC]
@@ -249,6 +256,7 @@ public class GameTurnSystem : MonoBehaviour
             state = TurnState.PlayerTurn;
             phase.text = "Phase: " + state;
             Debug.Log(phase.text);
+            Controller.ctrl.useJoker();
             coInst = StartCoroutine(Timer(120));
         }
         else if (false) //(oponnentAsWin)
