@@ -292,6 +292,15 @@ public class Controller : MonoBehaviour {
         tile.setState(tile.state);
     }
 
+    public void cardCreateObstacle(){
+        this.m_character.CreateObstacle();
+    }
+
+    public void cardRemoveObstacle()
+    {
+        this.m_character.CreateObstacle(1);
+    }
+
     void SetAllNextTiles()
     {
         foreach (Tile tile in m_gameBoardI)
