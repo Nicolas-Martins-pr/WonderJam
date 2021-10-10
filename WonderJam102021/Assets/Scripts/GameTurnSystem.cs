@@ -62,8 +62,7 @@ public class GameTurnSystem : MonoBehaviour
         {
             Debug.Log("no timer to stop");
         }
-        coInst =StartCoroutine(Timer(5));
-        //il faut implémenter l'animator pour terminer cette phase du jeu
+        coInst =StartCoroutine(Timer(3));
     }
 
     public void FinishTurn()
@@ -75,6 +74,9 @@ public class GameTurnSystem : MonoBehaviour
     [PunRPC]
     void PlayCard()
     {
+        typeCardSelected = -1;
+        KeyCardSelected = -1;
+        oponnentTypeCardSelected = -1;
         state = TurnState.Card;
         phase.text = "Phase: "+state;
         Debug.Log(phase.text);
@@ -113,9 +115,18 @@ public class GameTurnSystem : MonoBehaviour
         }
         coInst = StartCoroutine(Timer(5));
         //show border and interior of oposite card
-        GameSetup.GS.spawnPoints[0].GetChild(1).GetChild(0).gameObject.SetActive(true);
-        GameSetup.GS.spawnPoints[0].GetChild(1).GetChild(1).gameObject.SetActive(true);
-        rollButton.gameObject.SetActive(true);
+        try
+        {
+            GameSetup.GS.spawnPoints[0].GetChild(1).GetChild(0).gameObject.SetActive(true);
+            GameSetup.GS.spawnPoints[0].GetChild(1).GetChild(1).gameObject.SetActive(true);
+            rollButton.gameObject.SetActive(true);
+        }
+        catch(Exception e)
+        {
+            rollButton.gameObject.SetActive(true);
+        }
+        
+        
     }
 
     public void RollDices()
@@ -235,15 +246,6 @@ public class GameTurnSystem : MonoBehaviour
     [PunRPC]
     public void PlayCharacter()
     {
-        try
-        {
-            StopCoroutine(coInst);
-        }
-        catch (Exception e)
-        {
-            Debug.Log("no timer to stop");
-        }
-
         ComputeResult();
         
         //Hide placeholders
@@ -421,10 +423,13 @@ public class GameTurnSystem : MonoBehaviour
 
         if (state == TurnState.PlayerTurn)
         {
-
-        }else if(state==TurnState.Card)
+            Controller.ctrl.ResetBeforeAction();
+            PV.RPC("SetupTurn", RpcTarget.AllBuffered);
+        }
+        else if(state==TurnState.Card)
         {
             oponnentIsWaiting = false;
+            selectCardRec(0);
             DrawChance();
         }
         else if (state==TurnState.Start)

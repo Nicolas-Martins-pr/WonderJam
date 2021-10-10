@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -115,7 +116,7 @@ public class Controller : MonoBehaviour {
     }
     void RotateTile(GameObject tile)
     {
-        int nbRotation = (int)(Random.value * 4);
+        int nbRotation = (int)(UnityEngine.Random.value * 4);
         if (nbRotation == 0)
         {
             tile.transform.Rotate(new Vector3(0, 90, 0));
@@ -164,17 +165,17 @@ public class Controller : MonoBehaviour {
     public void GenerateObstacleZone() // Set all tree + mountains + ruins and the two portals
     {
         int nbtree = this.m_nbTrees, nbmountain = this.m_nbMountain, nbruin = this.m_nbRuins, nbportal = this.m_nbPortals;
-        int rand3 = (int)(Random.value * 3);
+        int rand3 = (int)(UnityEngine.Random.value * 3);
 
-        int row = (int)(Random.value * m_side), column = (int)(Random.value * m_side);
+        int row = (int)(UnityEngine.Random.value * m_side), column = (int)(UnityEngine.Random.value * m_side);
 
         Tile tile;
         while (nbtree != 0 || nbruin != 0 || nbmountain != 0)
         {
-            row = (int)(Random.value * m_side);
-            column = (int)(Random.value * m_side);
+            row = (int)(UnityEngine.Random.value * m_side);
+            column = (int)(UnityEngine.Random.value * m_side);
 
-            rand3 = (int)(Random.value * 3);
+            rand3 = (int)(UnityEngine.Random.value * 3);
             if ((column == m_side / 2 && row == 0) || (column == 0 && row == m_side - 1) || (column == m_side - 1 && row == m_side - 1)) { }
             else
             {
@@ -229,8 +230,8 @@ public class Controller : MonoBehaviour {
 
         while (nbportal != 0)
         {
-            row = (int)(Random.value * m_side);
-            column = (int)(Random.value * m_side);
+            row = (int)(UnityEngine.Random.value * m_side);
+            column = (int)(UnityEngine.Random.value * m_side);
 
             if ((column == m_side / 2 && row == 0) || (column == 0 && row == m_side - 1) || (column == m_side - 1 && row == m_side - 1)) { }
             else
@@ -327,7 +328,6 @@ public class Controller : MonoBehaviour {
     public Tile SetTileState(int h, int v, int s)
     {
         Tile tile = GetTile(h, v);
-        Debug.Log(h + " ; " + v + " = " + s);
         tile.clearState();
         if (s == 0)
         {
@@ -396,7 +396,14 @@ public class Controller : MonoBehaviour {
         Debug.Log(direction);
         GetPlayer().getTile().setPlayer(false);
         GetPlayer().setTile(tilePlayer);
-        GetPlayer().StartMove(direction);
+        if (!direction.Equals(""))
+        {
+            GetPlayer().StartMove(direction);
+        }
+        else
+        {
+            GetPlayer().FinishTP(posTile);
+        }
         ResetBeforeAction();
     }
 
@@ -406,5 +413,13 @@ public class Controller : MonoBehaviour {
         DesactiveAllTileSelectorIndicator();
         displayCalledOnce = false;
         GetPlayer().setClicked(false);
+        try
+        {
+            GameTurnSystem.GTS.jokerWindow.SetActive(false);
+        }catch(Exception e)
+        {
+
+        }
+        
     }
 }

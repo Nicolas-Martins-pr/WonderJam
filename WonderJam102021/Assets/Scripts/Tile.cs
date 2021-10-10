@@ -152,7 +152,6 @@ public class Tile : MonoBehaviour
     public void setState(int _state){
 
         clearState();
-        Debug.Log(_state);
         if(_state == 0){
             
         }
@@ -256,7 +255,7 @@ public class Tile : MonoBehaviour
     #region Utils
 
     public void SetAdjacentTiles(List<Tile> boardtiles, int nbMove = 0) // optimisable
-    {
+    {   
         if (nbMove == 0)
         {
             foreach (Tile tile in boardtiles)
@@ -425,9 +424,7 @@ public class Tile : MonoBehaviour
 
         var tile = (Tile)obj;
         // ajout lucas
-        Debug.Log(tile.state);
         tile.getState();
-        Debug.Log(tile.state);
 
         //
         byte[] h = BitConverter.GetBytes(tile.getPositionH());
