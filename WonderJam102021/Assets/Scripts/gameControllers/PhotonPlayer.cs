@@ -8,12 +8,13 @@ public class PhotonPlayer : MonoBehaviour
 {
     private PhotonView PV;
     public GameObject myAvatar;
-
-
-
+    private SmoothCam smooth;
+  
+    
     // Start is called before the first frame update
     void Start()
     {
+
         PV = GetComponent<PhotonView>();
         if (PV.IsMine)
         {
@@ -28,6 +29,6 @@ public class PhotonPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+     
     }
 }
