@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
+using Photon.Pun;
 public class Tile : MonoBehaviour
 {
 
@@ -30,6 +30,7 @@ public class Tile : MonoBehaviour
 
     public GameObject gateHeaven;
     public GameObject gateHell;
+    public PhotonView pv;
 
     public bool m_active = false;
     public bool m_activePortal = false; // singleton for move one portal position
@@ -48,6 +49,7 @@ public class Tile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        pv = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
@@ -142,25 +144,27 @@ public class Tile : MonoBehaviour
     }
 
     public void setState(int _state){
-        Debug.Log("avant" + _state);
-        clearState();
-        Debug.Log("apres" + _state);
-        if (_state == 0)
-        {
 
+        clearState();
+        Debug.Log(_state);
+        if(_state == 0){
+            
         }
-        else if (_state == 1)
+        else if (_state ==1)
         {
             this.setMountain(true);
         }
-        else if (_state == 2)
+        else if (_state ==2)
         {
             this.setTree(true);
         }
-        else if (_state == 3)
+        else if (_state ==3)
         {
             this.setRuin(true);
         }
+
+
+
 
     }
     public void clearState(){
@@ -357,8 +361,8 @@ public class Tile : MonoBehaviour
             Controller.ctrl.desactivatePortalSelection();
             portal.GetComponent<Portal>().getMovementPortal();
         }
-        if (this.m_activeSetObstacle)
-        { 
+        else if (this.m_activeSetObstacle)
+        {
             this.m_activeSetObstacle = false;
             this.setState(2);
             Controller.ctrl.updateState(this);
@@ -414,7 +418,10 @@ public class Tile : MonoBehaviour
 
         var tile = (Tile)obj;
         // ajout lucas
+        Debug.Log(tile.state);
         tile.getState();
+        Debug.Log(tile.state);
+
         //
         byte[] h = BitConverter.GetBytes(tile.getPositionH());
         if (BitConverter.IsLittleEndian)
@@ -431,7 +438,7 @@ public class Tile : MonoBehaviour
         // Byte[] data = new byte[2*4];
         Byte[] data = new byte[3*4];
 
-        return JoinBytes(h,v,s);
+        return JoinBytes(JoinBytes(h,v),s);
     }
 
     private static byte[] JoinBytes(params byte[][] arrays)
