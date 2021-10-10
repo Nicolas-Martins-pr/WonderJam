@@ -32,8 +32,13 @@ public class Tile : MonoBehaviour
 
     public bool m_active = false;
     public bool m_activePortal = false; // singleton for move one portal position
+    public bool m_activeSetObstacle = false;
+    public bool m_activeRemoveObstacle = false;
     public List<Tile> m_AdjacentTiles = new List<Tile>();  //Group of different Tile free to move 
-    public List<Tile> m_AdjacentTiles2 = new List<Tile>();  //Group of different Tile free to move 
+    public List<Tile> m_AdjacentTiles2 = new List<Tile>();  //Group of different Tile free to move distance == 2
+
+    public List<Tile> m_AllObstacles = new List<Tile>();
+    public List<Tile> m_AllWakable = new List<Tile>();
 
     public GameObject m_selectorIndicator;
 
@@ -252,30 +257,31 @@ public class Tile : MonoBehaviour
         else
         {
             foreach (Tile tile in boardtiles)
-        {
-            if (tile.getPositionH() == this.getPositionH() -1 &&
-                    tile.getPositionV() == this.getPositionV() ||
-                    tile.getPositionH() == this.getPositionH() +1 && tile.getPositionV() == this.getPositionV() ||
-                    tile.getPositionV() == this.getPositionV() -1 && tile.getPositionH() == this.getPositionH() ||
-                    tile.getPositionV() == this.getPositionV() +1 && tile.getPositionH() == this.getPositionH())
             {
-                this.m_AdjacentTiles2.Add(tile);
+                if (tile.getPositionH() == this.getPositionH() -1 &&
+                        tile.getPositionV() == this.getPositionV() ||
+                        tile.getPositionH() == this.getPositionH() +1 && tile.getPositionV() == this.getPositionV() ||
+                        tile.getPositionV() == this.getPositionV() -1 && tile.getPositionH() == this.getPositionH() ||
+                        tile.getPositionV() == this.getPositionV() +1 && tile.getPositionH() == this.getPositionH())
+                {
+                    this.m_AdjacentTiles2.Add(tile);
+                }
+                else if (tile.getPositionH() == this.getPositionH() -2 && tile.getPositionV() == this.getPositionV() ||
+                        tile.getPositionH() == this.getPositionH() +2 && tile.getPositionV() == this.getPositionV() ||
+                        tile.getPositionV() == this.getPositionV() -2 && tile.getPositionH() == this.getPositionH() ||
+                        tile.getPositionV() == this.getPositionV() +2 && tile.getPositionH() == this.getPositionH())
+                {
+                    this.m_AdjacentTiles2.Add(tile);
+                }
+                else if (tile.getPositionH() == this.getPositionH() -1 && tile.getPositionV() == this.getPositionV() -1 ||
+                        tile.getPositionH() == this.getPositionH() +1 && tile.getPositionV() == this.getPositionV() -1 ||
+                        tile.getPositionV() == this.getPositionV() -1 && tile.getPositionH() == this.getPositionH() +1 ||
+                        tile.getPositionV() == this.getPositionV() +1 && tile.getPositionH() == this.getPositionH()+1)
+                {
+                    this.m_AdjacentTiles2.Add(tile);
+                }
             }
-            else if (tile.getPositionH() == this.getPositionH() -2 && tile.getPositionV() == this.getPositionV() ||
-                    tile.getPositionH() == this.getPositionH() +2 && tile.getPositionV() == this.getPositionV() ||
-                    tile.getPositionV() == this.getPositionV() -2 && tile.getPositionH() == this.getPositionH() ||
-                    tile.getPositionV() == this.getPositionV() +2 && tile.getPositionH() == this.getPositionH())
-            {
-                this.m_AdjacentTiles2.Add(tile);
-            }
-            else if (tile.getPositionH() == this.getPositionH() -1 && tile.getPositionV() == this.getPositionV() -1 ||
-                    tile.getPositionH() == this.getPositionH() +1 && tile.getPositionV() == this.getPositionV() -1 ||
-                    tile.getPositionV() == this.getPositionV() -1 && tile.getPositionH() == this.getPositionH() +1 ||
-                    tile.getPositionV() == this.getPositionV() +1 && tile.getPositionH() == this.getPositionH()+1)
-            {
-                this.m_AdjacentTiles2.Add(tile);
-            }
-        }
+            getAllWalkable(boardtiles);
         }
         
         setSelectorIndicator(false);
@@ -310,6 +316,40 @@ public class Tile : MonoBehaviour
         return walkableTiles;
     }
 
+    public void CreateObstacle(int value = 0)
+    {
+        if (value == 0) // Set an obstacle
+        {
+            foreach (Tile tile in m_AllWakable)
+            {
+                tile.setSelectorIndicator(true);
+            }
+            
+        }
+        else            // delete obstacle
+        {
+            foreach (Tile tile in m_AllObstacles)
+            {
+                tile.setSelectorIndicator(true);
+            }
+        }
+    }
+    public void getAllWalkable(List<Tile> boardtiles)
+    {
+        foreach (Tile tile in boardtiles)
+        {
+            if (tile.isWalkable()){
+                this.m_AllWakable.Add(tile);
+                this.m_activeSetObstacle = true;
+            }
+            else
+            {
+                this.m_AllObstacles.Add(tile);
+                this.m_activeRemoveObstacle = true;
+            }
+        }
+    }
+
     public void setSelectorIndicator(bool active)
     {
         this.m_selectorIndicator.SetActive(active);
@@ -322,9 +362,23 @@ public class Tile : MonoBehaviour
 
     void OnMouseUp() 
     {
-        if (this.m_activePortal)
+        if (this.m_activeSetObstacle)
+        {
+            this.m_activeSetObstacle = false;
+            this.setState(2);
+            Controller.ctrl.updateState(this);
+        }
+        else if (this.m_activeRemoveObstacle)
+        {
+            this.m_activeRemoveObstacle = false;
+            this.setState(0);
+            Controller.ctrl.updateState(this);
+        }
+        else if (this.m_activePortal)
         {
             this.portalActif.SetCurrentTile(this);
+            this.m_activePortal = false;
+            
         }
         else if(this.isActive())
         {
