@@ -267,9 +267,10 @@ public class Tile : MonoBehaviour
             {
                 this.m_AdjacentTiles.Add(tile);
             }
-        }if (portail)
-        {
-             this.m_AdjacentTiles.Add(this.portal.GetComponent<Portal>().getExitPortal().m_currentTile);
+            if (this.hasPortal())
+            {
+                this.m_AdjacentTiles.Add(this.portalActif.getExitPortal().m_currentTile);
+            }
         }
        
         }
