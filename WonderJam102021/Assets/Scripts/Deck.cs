@@ -88,7 +88,6 @@ public class Deck : MonoBehaviour
         {
             int r= Random.Range(0,this.transform.childCount);
             PV.RPC("RemoveCardFromDeck", RpcTarget.AllBuffered, r, playerId);
-            //A changer pour les spawn dans les spawn poin
         }
     }
 

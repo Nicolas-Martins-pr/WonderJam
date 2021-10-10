@@ -33,17 +33,19 @@ public class GameTurnSystem : MonoBehaviour
     public bool asWin;
     public bool oponnentAsWin;
     public GameObject windowResult;
+    public GameObject jokerWindow;
 
     void Start()
     {
         PV = GetComponent<PhotonView>();
         GTS = this;
+        //TODO sera à enlever quand le earthquake ce fera dans le protonplayer
         SetupTurn();
         
     }
 
     // Update is called once per frame
-
+    [PunRPC]
     void SetupTurn()
     {
         typeCardSelected = -1;
@@ -52,14 +54,6 @@ public class GameTurnSystem : MonoBehaviour
         state = TurnState.Start;
         phase.text = "Phase: " + state;
         Debug.Log(phase.text);
-        coInst=StartCoroutine(Timer(5));
-        //il faut implémenter l'animator pour terminer cette phase du jeu
-    }
-
-    [PunRPC]
-    void PlayCard()
-    {
-
         try
         {
             StopCoroutine(coInst);
@@ -68,9 +62,30 @@ public class GameTurnSystem : MonoBehaviour
         {
             Debug.Log("no timer to stop");
         }
+        coInst =StartCoroutine(Timer(5));
+        //il faut implémenter l'animator pour terminer cette phase du jeu
+    }
+
+    public void FinishTurn()
+    {
+        Debug.Log("next Turn");
+        PV.RPC("SetupTurn", RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    void PlayCard()
+    {
         state = TurnState.Card;
         phase.text = "Phase: "+state;
         Debug.Log(phase.text);
+        try
+        {
+            StopCoroutine(coInst);
+        }
+        catch (Exception e)
+        {
+            Debug.Log("no timer to stop");
+        }
         coInst = StartCoroutine(Timer(120));
         Deck.deck.GiveCard(PhotonRoom.room.playerId);
     }
@@ -85,16 +100,17 @@ public class GameTurnSystem : MonoBehaviour
     void DrawChance()
     {
         setOponnentWait(false);
-        try
-        {
-            StopCoroutine(coInst);
-        }catch(Exception e)
-        {
-            Debug.Log("no timer to stop");
-        }
         state = TurnState.Roll;
         phase.text = "Phase: " + state;
         Debug.Log(phase.text);
+        try
+        {
+            StopCoroutine(coInst);
+        }
+        catch (Exception e)
+        {
+            Debug.Log("no timer to stop");
+        }
         coInst = StartCoroutine(Timer(5));
         //show border and interior of oposite card
         GameSetup.GS.spawnPoints[0].GetChild(1).GetChild(0).gameObject.SetActive(true);
@@ -244,18 +260,35 @@ public class GameTurnSystem : MonoBehaviour
         setOponnentWait(false);
 
         
-        if (false) //(asWin)
+        if (asWin)
         {
             state = TurnState.PlayerTurn;
             phase.text = "Phase: " + state;
             Debug.Log(phase.text);
+            Controller.ctrl.useJoker();
+            try
+            {
+                StopCoroutine(coInst);
+            }
+            catch (Exception e)
+            {
+                Debug.Log("no timer to stop");
+            }
             coInst = StartCoroutine(Timer(120));
         }
-        else if (false) //(oponnentAsWin)
+        else if (oponnentAsWin)
         {
             state = TurnState.Wait;
             phase.text = "Phase: " + state;
             Debug.Log(phase.text);
+            try
+            {
+                StopCoroutine(coInst);
+            }
+            catch (Exception e)
+            {
+                Debug.Log("no timer to stop");
+            }
             coInst = StartCoroutine(Timer(120));
         }
         else

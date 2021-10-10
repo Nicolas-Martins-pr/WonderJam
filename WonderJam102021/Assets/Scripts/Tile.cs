@@ -32,6 +32,7 @@ public class Tile : MonoBehaviour
 
     public bool m_active = false;
     public bool m_activePortal = false; // singleton for move one portal position
+    public bool selectPortal = false;
     public List<Tile> m_AdjacentTiles = new List<Tile>();  //Group of different Tile free to move 
     public List<Tile> m_AdjacentTiles2 = new List<Tile>();  //Group of different Tile free to move 
 
@@ -322,7 +323,12 @@ public class Tile : MonoBehaviour
 
     void OnMouseUp() 
     {
-        if (this.m_activePortal)
+        if (this.selectPortal)
+        {
+            Controller.ctrl.desactivatePortalSelection();
+            portal.GetComponent<Portal>().getMovementPortal();
+        }
+        else if (this.m_activePortal)
         {
             this.portalActif.SetCurrentTile(this);
         }
@@ -337,7 +343,6 @@ public class Tile : MonoBehaviour
     #region serialize
     public static object Deserialize(byte[] data)
     {
-        Debug.Log("deserialize");
 
         byte[] hb = new byte[4];
         Array.Copy(data, 0, hb, 0, hb.Length);
@@ -357,8 +362,6 @@ public class Tile : MonoBehaviour
         if (BitConverter.IsLittleEndian)
             Array.Reverse(vb);
         int s = BitConverter.ToInt32(sb, 0);
-        //
-        Debug.Log(h + " " + v + " " + s);
         Tile tile = Controller.ctrl.GetTile(h,v);
         tile.setState(s);
         return tile;
@@ -366,9 +369,8 @@ public class Tile : MonoBehaviour
 
     public static byte[] Serialize(object obj)
     {
-        Debug.Log("serialize");
+
         var tile = (Tile)obj;
-        Debug.Log(tile.getPositionH()+ " "+ tile.getPositionV());
         // ajout lucas
         tile.getState();
         //
