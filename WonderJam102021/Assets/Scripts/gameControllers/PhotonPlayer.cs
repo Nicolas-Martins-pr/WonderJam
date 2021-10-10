@@ -94,6 +94,11 @@ public class PhotonPlayer : MonoBehaviour
             //get firts cards
             Deck.deck.fillCards();
             Deck.deck.GiveCard();
+
+            if (PhotonRoom.room.playerId == 1)
+            {
+                Controller.ctrl.earthquake();
+            }
         }
         
         
