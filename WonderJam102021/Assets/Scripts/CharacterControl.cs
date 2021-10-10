@@ -203,4 +203,34 @@ public class CharacterControl : MonoBehaviourPunCallbacks
         //StartMove("north");
     }
 
+    public void FinishTP(Vector3 pos)
+    {
+
+        playerpos.transform.position = pos;
+        if (getTile().m_endPlayer1)
+        {
+            if (PhotonRoom.room.playerId == 1)
+            {
+                haswin = true;
+                PV.RPC("SetHasWin", RpcTarget.OthersBuffered, false);
+                PV.RPC("EndGame", RpcTarget.AllBuffered);
+            }
+        }
+        else if (getTile().m_endPlayer2)
+        {
+            if (PhotonRoom.room.playerId == 2)
+            {
+                haswin = true;
+                PV.RPC("SetHasWin", RpcTarget.OthersBuffered, false);
+                PV.RPC("EndGame", RpcTarget.AllBuffered);
+            }
+        }
+        else if (GameTurnSystem.GTS.state == TurnState.PlayerTurn)
+        {
+            GameTurnSystem.GTS.FinishTurn();
+        }
+
+        //StartMove("north");
+    }
+
 }

@@ -374,7 +374,14 @@ public class Controller : MonoBehaviour {
         Debug.Log(direction);
         GetPlayer().getTile().setPlayer(false);
         GetPlayer().setTile(tilePlayer);
-        GetPlayer().StartMove(direction);
+        if (!direction.Equals(""))
+        {
+            GetPlayer().StartMove(direction);
+        }
+        else
+        {
+            GetPlayer().FinishTP(posTile);
+        }
         ResetBeforeAction();
     }
 
