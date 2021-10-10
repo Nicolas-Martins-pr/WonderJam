@@ -259,6 +259,7 @@ public class Controller : MonoBehaviour {
         foreach (Tile tile in m_gameBoardI)
         {
             tile.SetAdjacentTiles(m_gameBoardI);
+            tile.SetAdjacentTiles(m_gameBoardI, 1);
         }
     }
 

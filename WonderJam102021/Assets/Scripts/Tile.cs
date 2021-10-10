@@ -33,6 +33,7 @@ public class Tile : MonoBehaviour
     public bool m_active = false;
     public bool m_activePortal = false; // singleton for move one portal position
     public List<Tile> m_AdjacentTiles = new List<Tile>();  //Group of different Tile free to move 
+    public List<Tile> m_AdjacentTiles2 = new List<Tile>();  //Group of different Tile free to move 
 
     public GameObject m_selectorIndicator;
 
@@ -234,15 +235,37 @@ public class Tile : MonoBehaviour
 
     #region Utils
 
-    public void SetAdjacentTiles(List<Tile> boardtiles) // optimisable
+    public void SetAdjacentTiles(List<Tile> boardtiles, int nbMove = 0) // optimisable
     {
-        foreach (Tile tile in boardtiles)
+        if (nbMove == 0)
+        {
+            foreach (Tile tile in boardtiles)
         {
             if (tile.getPositionH() == this.getPositionH() -1 && tile.getPositionV() == this.getPositionV() || tile.getPositionH() == this.getPositionH() +1 && tile.getPositionV() == this.getPositionV() || tile.getPositionV() == this.getPositionV() -1 && tile.getPositionH() == this.getPositionH()||tile.getPositionV() == this.getPositionV() +1 && tile.getPositionH() == this.getPositionH())
             {
                 this.m_AdjacentTiles.Add(tile);
             }
         }
+        }
+        else
+        {
+            foreach (Tile tile in boardtiles)
+        {
+            if (tile.getPositionH() == this.getPositionH() -1 && tile.getPositionV() == this.getPositionV() || tile.getPositionH() == this.getPositionH() +1 && tile.getPositionV() == this.m_currentTile.getPositionV() || tile.getPositionV() == this.getPositionV() -1 && tile.getPositionH() == this.getPositionH() || tile.getPositionV() == this.getPositionV() +1 && tile.getPositionH() == this.getPositionH())
+            {
+                this.m_AdjacentTiles2.Add(tile);
+            }
+            else if (tile.getPositionH() == this.getPositionH() -2 && tile.getPositionV() == this.getPositionV() || tile.getPositionH() == this.getPositionH() +2 && tile.getPositionV() == this.m_currentTile.getPositionV() || tile.getPositionV() == this.getPositionV() -2 && tile.getPositionH() == this.getPositionH() || tile.getPositionV() == this.getPositionV() +2 && tile.getPositionH() == this.getPositionH())
+            {
+                this.m_AdjacentTiles2.Add(tile);
+            }
+            else if (tile.getPositionH() == this.getPositionH() -1 && tile.getPositionV() == this.getPositionV() -1 || tile.getPositionH() == this.getPositionH() +1 && tile.getPositionV() == this.m_currentTile.getPositionV() -1 || tile.getPositionV() == this.getPositionV() -1 && tile.getPositionH() == this.getPositionH() +1 || tile.getPositionV() == this.getPositionV() +1 && tile.getPositionH() == this.getPositionH()+1)
+            {
+                this.m_AdjacentTiles2.Add(tile);
+            }
+        }
+        }
+        
         setSelectorIndicator(false);
     }
     public List<Tile> getMovements()
@@ -250,6 +273,20 @@ public class Tile : MonoBehaviour
         List<Tile> walkableTiles = new List<Tile>();
         List<Tile> tiles = this.GetAdjacentTiles();
         foreach (Tile tile in tiles)
+        {
+            if (tile.isWalkable())
+            {
+                walkableTiles.Add(tile);
+                tile.setSelectorIndicator(true);
+            }
+            
+        }
+        return walkableTiles;
+    }
+    public List<Tile> getMovements2()
+    {
+        List<Tile> walkableTiles = new List<Tile>();
+        foreach (Tile tile in this.m_AdjacentTiles2)
         {
             if (tile.isWalkable())
             {
