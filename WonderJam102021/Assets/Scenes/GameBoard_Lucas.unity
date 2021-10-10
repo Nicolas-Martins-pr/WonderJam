@@ -172,8 +172,8 @@ MonoBehaviour:
   m_nbRuins: 5
   m_nbPortals: 2
   m_board: {fileID: 35211092}
-  portal1: {fileID: 305961479}
-  portal2: {fileID: 442648947}
+  m_portal1: {fileID: 305961479}
+  m_portal2: {fileID: 442648947}
   gameBoard:
   - {fileID: 0}
   - {fileID: 0}
@@ -738,10 +738,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_positionV: 0
   m_positionH: 0
+  state: 0
   m_mountain: 0
   m_ruin: 0
   m_water: 0
   m_tree: 0
+  m_portal: 0
   m_player: 0
   m_endPlayer1: 0
   m_endPlayer2: 0
@@ -749,9 +751,11 @@ MonoBehaviour:
   trees: []
   ruin: {fileID: 0}
   portal: {fileID: 0}
+  portalActif: {fileID: 0}
   gateHeaven: {fileID: 0}
   gateHell: {fileID: 0}
   m_active: 0
+  m_activePortal: 0
   m_AdjacentTiles: []
   m_selectorIndicator: {fileID: 0}
 --- !u!1 &1435047878

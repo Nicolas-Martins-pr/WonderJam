@@ -37,6 +37,8 @@ public class Controller : MonoBehaviour {
         SetAllBoardTiles();
         GenerateObstacleZone();
         SetAllNextTiles();
+
+        earthquake();
     }
 
     private void Update() 
@@ -224,6 +226,32 @@ public class Controller : MonoBehaviour {
             }
         }
 
+    }
+
+    public void earthquake() 
+     { 
+         foreach (var ti in m_gameBoardI) 
+         { 
+             ti.setMountain(false); 
+             ti.setRuin(false); 
+             ti.setTree(false); 
+              
+         } 
+         GenerateObstacleZone(); 
+        foreach (Tile tile in m_gameBoardI)
+        {
+            tile.getState();
+            updateStateRec(tile);
+        }
+    } 
+
+    public void updateStateRec(Tile tile){
+        PV.RPC("updateState", RpcTarget.AllBuffered, tile);
+    }
+
+    [PunRPC]
+    public void updateState(Tile tile){
+        tile.setState(tile.state);
     }
 
     void SetAllNextTiles()
