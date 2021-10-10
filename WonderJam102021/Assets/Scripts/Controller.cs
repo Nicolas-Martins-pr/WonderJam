@@ -18,6 +18,7 @@ public class Controller : MonoBehaviour {
     public Portal m_portal1;
     public Portal m_portal2;
 
+    public List<Tile> portals = new List<Tile>();
     public Tile[] gameBoard;
 
     public List<Tile> m_gameBoardI;
@@ -147,8 +148,6 @@ public class Controller : MonoBehaviour {
         m_portal1.m_currentTile.selectPortal = true;
         m_portal1.m_currentTile.setActive(true);
 
-        m_portal1.m_currentTile.selectPortal = true;
-        m_portal1.m_currentTile.setActive(true);
     }
 
     public void useJoker()
@@ -159,9 +158,6 @@ public class Controller : MonoBehaviour {
 
     public void desactivatePortalSelection()
     {
-        m_portal1.m_currentTile.selectPortal = false;
-        m_portal1.m_currentTile.setActive(false);
-
         m_portal1.m_currentTile.selectPortal = false;
         m_portal1.m_currentTile.setActive(false);
     }
@@ -244,15 +240,18 @@ public class Controller : MonoBehaviour {
                 {
                     if (this.m_portal1.m_currentTile == null)
                     {
-                        this.m_portal1.SetCurrentTile(tile);
+                        // this.m_portal1.SetCurrentTile(tile);
+                        tile.setPortal(true);
                         nbportal -= 1;
                     }
                     else
                     {
                         if (!tile.hasPortal())
                         {
-                            this.m_portal2.SetCurrentTile(tile);
+                            // this.m_portal2.SetCurrentTile(tile);
+                            tile.setPortal(true);
                             nbportal -= 1;
+                            
                         }
 
                     }
@@ -270,6 +269,7 @@ public class Controller : MonoBehaviour {
             ti.setMountain(false);
             ti.setRuin(false);
             ti.setTree(false);
+            ti.setPortal(false);
 
         }
         GenerateObstacleZone();
@@ -279,6 +279,7 @@ public class Controller : MonoBehaviour {
             updateStateRec(tile);
         }
         ResetBeforeAction();
+        getPortals();
         if (GameTurnSystem.GTS.state == TurnState.PlayerTurn)
             GameTurnSystem.GTS.FinishTurn();
     }
@@ -330,7 +331,7 @@ public class Controller : MonoBehaviour {
         tile.clearState();
         if (s == 0)
         {
-
+            tile.setPortal(false);
         }
         else if (s == 1)
         {
@@ -344,8 +345,29 @@ public class Controller : MonoBehaviour {
         {
             tile.setRuin(true);
         }
+
+        else if (s==4)
+        {
+           tile.setPortal(true);
+
+            
+        }
         tile.state =s;
         return tile;
+    }
+
+    public void getPortals()
+    {
+        portals.Clear();
+        foreach (Tile tile in m_gameBoardI)
+        {
+            if (tile.hasPortal())
+            {
+                portals.Add(tile);
+            }
+        }
+        m_portal1.SetCurrentTile(portals[0]);
+        m_portal2.SetCurrentTile(portals[1]);
     }
 
     [PunRPC]
