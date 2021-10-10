@@ -73,6 +73,26 @@ public class CharacterControl : MonoBehaviourPunCallbacks
     }
 
 
+    public void CreateObstacle(int value = 0)
+    {
+        if (value == 0) // Set an obstacle
+        {
+            foreach (Tile tile in this.m_tile.m_AllWakable)
+            {
+                tile.setSelectorIndicator(true);
+            }
+            
+        }
+        else            // delete obstacle
+        {
+            foreach (Tile tile in this.m_tile.m_AllObstacles)
+            {
+                tile.setSelectorIndicator(true);
+            }
+        }
+    }
+
+
 
     public void setClicked(bool value)
     {

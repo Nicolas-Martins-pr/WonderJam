@@ -316,33 +316,7 @@ public class Tile : MonoBehaviour
         return walkableTiles;
     }
 
-    public void cardCreateObstacle(){
-        CreateObstacle();
-    }
 
-    public void cardRemoveObstacle()
-    {
-        CreateObstacle(1);
-    }
-
-    public void CreateObstacle(int value = 0)
-    {
-        if (value == 0) // Set an obstacle
-        {
-            foreach (Tile tile in m_AllWakable)
-            {
-                tile.setSelectorIndicator(true);
-            }
-            
-        }
-        else            // delete obstacle
-        {
-            foreach (Tile tile in m_AllObstacles)
-            {
-                tile.setSelectorIndicator(true);
-            }
-        }
-    }
     public void getAllWalkable(List<Tile> boardtiles)
     {
         foreach (Tile tile in boardtiles)
